@@ -1,0 +1,42 @@
+h1 {
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 50px;
+    color: black;
+}
+
+h6, h5 {
+    text-align: center;
+    margin-left: 50px;
+    margin-right: 50px;
+    color: black;
+    margin-top: 50px;
+}
+
+.notLoggedIn {
+    color: #5f6266;
+    margin-top: 50px;
+}
+
+.notLoggedIn button {
+    margin-top: 25px;
+}
+
+.login-bg-top {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -10;
+}
+
+.login-bg-bottom {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: -10;
+}
+
+.login-logo {
+    align-self: center;
+}

@@ -1,0 +1,16 @@
+.DS_Store
+.env
+.awcache/
+.vscode
+.nyc_output/
+coverage/
+
+VCAP_SERVICES.json
+VCAP*
+
+/node_modules
+
+logs/*.log
+!logs/.gitkeep
+
+docs/

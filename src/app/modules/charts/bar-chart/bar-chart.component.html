@@ -1,0 +1,8 @@
+
+<div *ngIf="!data" class="chart">
+    <small class="text-muted"> NO DATA AVAILABLE </small>
+</div>
+
+<div *ngIf="data" class="chart" style="display: block;">
+  <canvas #barChart>{{ chart }}</canvas>
+</div>

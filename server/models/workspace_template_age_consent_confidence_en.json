@@ -1,0 +1,1060 @@
+{
+    "workspace_id": null,
+    "name": "[REPLACE_WITH_CAMPAIGN_NAME]",
+    "description": "[REPLACE_WITH_PICKER_DISPLAY/DESCRIPTION]",
+    "language": "[REPLACE_WITH_CAMPAIGN_LANGUAGE]",
+    "metadata": {
+        "api_version": {
+            "major_version": "v1",
+            "minor_version": "2017-05-26"
+        },
+        "rev": "[REPLACE_WITH_CLOUD_DOC_REV]",
+        "campaign_id": "[REPLACE_WITH_CLOUD_DOC_ID]"
+    },
+    "intents": [
+        {
+            "intent": "yes",
+            "examples": [
+                {
+                    "text": "ok then sure"
+                },
+                {
+                    "text": "ok"
+                },
+                {
+                    "text": "sounds fine to me"
+                },
+                {
+                    "text": "yep"
+                },
+                {
+                    "text": "yes"
+                },
+                {
+                    "text": "sure"
+                },
+                {
+                    "text": "yeah"
+                },
+                {
+                    "text": "y"
+                },
+                {
+                    "text": "ya"
+                },
+                {
+                    "text": "ye"
+                },
+                {
+                    "text": "yhy"
+                },
+                {
+                    "text": "ehem"
+                },
+                {
+                    "text": "tak"
+                },
+                {
+                    "text": "ja"
+                },
+                {
+                    "text": "Of course"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "no",
+            "examples": [
+                {
+                    "text": "not really"
+                },
+                {
+                    "text": "no way"
+                },
+                {
+                    "text": "no thanks"
+                },
+                {
+                    "text": "nope"
+                },
+                {
+                    "text": "nah"
+                },
+                {
+                    "text": "i'd rather not"
+                },
+                {
+                    "text": "n"
+                },
+                {
+                    "text": "nein"
+                },
+                {
+                    "text": "no"
+                },
+                {
+                    "text": "over my dead body"
+                },
+                {
+                    "text": "nie"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "maybe",
+            "examples": [
+                {
+                    "text": "i'm not sure"
+                },
+                {
+                    "text": "maybe"
+                },
+                {
+                    "text": "maybe if"
+                },
+                {
+                    "text": "maybe when"
+                },
+                {
+                    "text": "i don't know"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "all",
+            "examples": [
+                {
+                    "text": "all of them"
+                },
+                {
+                    "text": "all of the above"
+                },
+                {
+                    "text": "every one of them"
+                },
+                {
+                    "text": "every single one of them"
+                },
+                {
+                    "text": "everything"
+                },
+                {
+                    "text": "all"
+                }
+            ],
+            "description": "When a user replies \"all\" to a multiple choice question"
+        },
+        {
+            "intent": "none",
+            "examples": [
+                {
+                    "text": "none"
+                },
+                {
+                    "text": "not any of them"
+                },
+                {
+                    "text": "none of them"
+                },
+                {
+                    "text": "nada"
+                },
+                {
+                    "text": "null"
+                },
+                {
+                    "text": "can't choose"
+                },
+                {
+                    "text": "none of the above"
+                }
+            ],
+            "description": "When a user replies \"none\" to a multiple choice question"
+        },
+        {
+            "intent": "over-21",
+            "examples": [
+                {
+                    "text": "I am 21 or older"
+                },
+                {
+                    "text": "I am 21"
+                },
+                {
+                    "text": "I'm 21"
+                },
+                {
+                    "text": "I am older"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "under-21",
+            "examples": [
+                {
+                    "text": "I am not 21 years old"
+                },
+                {
+                    "text": "I am under 21 years old"
+                },
+                {
+                    "text": "I'm just about 21"
+                },
+                {
+                    "text": "I am not older"
+                },
+                {
+                    "text": "I am almost 21 years old"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "consent-agree",
+            "examples": [
+                {
+                    "text": "I consent"
+                }
+            ],
+            "description": "agree to consent message"
+        },
+        {
+            "intent": "consent-disagree",
+            "examples": [
+                {
+                    "text": "I don't consent"
+                },
+                {
+                    "text": "I do not consent"
+                },
+                {
+                    "text": "I won't consent to this"
+                }
+            ],
+            "description": ""
+        },
+        {
+            "intent": "what-is-consent-for",
+            "examples": [
+                {
+                    "text": "What am I giving consent for?"
+                },
+                {
+                    "text": "what does it mean if I give consent"
+                },
+                {
+                    "text": "What will happen if I give my consent"
+                },
+                {
+                    "text": "What does giving my consent mean?"
+                },
+                {
+                    "text": "What happens when I give my consent?"
+                }
+            ],
+            "description": "FAQ: What am I giving consent for?"
+        },
+        {
+            "intent": "what-is-the-purpose",
+            "examples": [
+                {
+                    "text": "what are you trying to get out of this"
+                },
+                {
+                    "text": "what research?"
+                },
+                {
+                    "text": "What is the purpose of this study"
+                },
+                {
+                    "text": "What is the purpose of this study?"
+                },
+                {
+                    "text": "Why are you asking these questions"
+                },
+                {
+                    "text": "What will be the outcome of this"
+                }
+            ],
+            "description": "FAQ: Asking what is the purpose of this study"
+        },
+        {
+            "intent": "what-will-be-asked-of-me",
+            "examples": [
+                {
+                    "text": "What kinds of questions will you ask"
+                },
+                {
+                    "text": "What will you ask me?"
+                },
+                {
+                    "text": "What will be asked of me?"
+                },
+                {
+                    "text": "What data will you gather?"
+                }
+            ],
+            "description": "FAQ: What will be asked of me?"
+        },
+        {
+            "intent": "who-is-doing-this",
+            "examples": [
+                {
+                    "text": "who is doing this survey"
+                },
+                {
+                    "text": "who will see these answers"
+                },
+                {
+                    "text": "who will have access to this data"
+                },
+                {
+                    "text": "who is running this"
+                },
+                {
+                    "text": "what company is running this"
+                },
+                {
+                    "text": "what organisation is running this"
+                },
+                {
+                    "text": "who are you"
+                },
+                {
+                    "text": "where do you work?"
+                },
+                {
+                    "text": "what research team?"
+                },
+                {
+                    "text": "who is the research team?"
+                },
+                {
+                    "text": "who is the research team"
+                },
+                {
+                    "text": "who is doing this survey?"
+                }
+            ],
+            "description": "FAQ: spot a question to ask who is doing this survey"
+        },
+        {
+            "intent": "who-do-I-contact",
+            "examples": [
+                {
+                    "text": "Who do I contact if I want to complain"
+                },
+                {
+                    "text": "Who do I contact if I have an issue"
+                },
+                {
+                    "text": "Who do I contact if I have a question"
+                },
+                {
+                    "text": "Who do I contact in the event of a complaint"
+                },
+                {
+                    "text": "Who do I contact if I need more information"
+                }
+            ],
+            "description": "FAQ: Who do I contact in the event of a complaint"
+        },
+
+        {
+            "intent": "will-it-be-confidential",
+            "examples": [
+                {
+                    "text": "where will my answers be stored?"
+                },
+                {
+                    "text": "Will my information be kept anonymous"
+                },
+                {
+                    "text": "Will my information be kept confidential?"
+                }
+            ],
+            "description": "FAQ: Will my information be kept confidential?"
+        },
+        {
+            "intent": "thank-you",
+            "examples": [
+                {
+                    "text": "happy to help"
+                },
+                {
+                    "text": "thanks for giving me the time"
+                },
+                {
+                    "text": "hopefully this helps"
+                },
+                {
+                    "text": "hopefully my data will help"
+                },
+                {
+                    "text": "hopefully my answers will help"
+                },
+                {
+                    "text": "anytime"
+                },
+                {
+                    "text": "thank you too"
+                },
+                {
+                    "text": "thanks very much"
+                },
+                {
+                    "text": "thank you"
+                },
+                {
+                    "text": "thanks for the opportunity"
+                }
+            ],
+            "description": "catching people saying thank you at the end of the survey"
+        },
+        {
+            "intent": "general_goodbye",
+            "examples": [
+                {
+                    "text": "happy to help"
+                },
+                {
+                    "text": "bye"
+                },
+                {
+                    "text": "bye bye"
+                },
+                {
+                    "text": "goodbye"
+                },
+                {
+                    "text": "see ya"
+                },
+                {
+                    "text": "have a good one"
+                },
+                {
+                    "text": "so long"
+                },
+                {
+                    "text": "good bye"
+                },
+                {
+                    "text": "farewell"
+                },
+                {
+                    "text": "that's all"
+                }
+            ]
+        }
+    ],
+    "entities": [
+        {
+            "entity": "sys-number",
+            "values": []
+        },
+        {
+            "entity": "gender",
+            "values": [
+                {
+                    "type": "synonyms",
+                    "value": "female",
+                    "synonyms": ["female", "girl", "lady", "woman", "gal"]
+                },
+                {
+                    "type": "synonyms",
+                    "value": "other",
+                    "synonyms": ["other"]
+                },
+                {
+                    "type": "synonyms",
+                    "value": "male",
+                    "synonyms": ["male", "boy", "bloke", "man", "fella", "guy", "dude"]
+                },
+                {
+                    "type": "synonyms",
+                    "value": "none",
+                    "synonyms": ["none", "prefer not to say"]
+                }
+            ]
+        }
+    ],
+    "dialog_nodes": [
+        {
+            "type": "standard",
+            "title": "Welcome",
+            "output": {
+                "text": {
+                    "values": [
+                        "Are you 21 years old or older? Please respond with 'I am 21 or older' or 'I am under 21 years old'"
+                    ],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": null,
+            "context": {
+                "quick_reply_options": ["I am 21 or older", "I am under 21 years old"]
+            },
+            "metadata": {},
+            "next_step": null,
+            "conditions": "(welcome || $from_public_message == 1) && $is_finished != 1",
+            "description": "",
+            "dialog_node": "Welcome",
+            "previous_sibling": null
+        },
+        {
+            "type": "standard",
+            "title": "age-confidence-wrapper",
+            "output": {
+              "generic": [
+                {
+                  "values": [],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "parent": "Welcome",
+            "context": {
+              "intent_confidence_achieved": "<? intents && intents.get(0).confidence > 0.99 ?>"
+            },
+            "next_step": {
+              "behavior": "skip_user_input"
+            },
+            "conditions": "#over-21",
+            "dialog_node": "age-confidence-wrapper"
+          },
+          {
+            "type": "standard",
+            "title": "age-check-yes-confidence-achieved",
+            "output": {
+              "text": {
+                "values": [
+                  "Dear participant, \n[PLEASE ENTER YOUR PRIVACY STATEMENT HERE]. \nDo you consent to the data provided by you to this account (including any personal data) being collected and used by [YOUR ORG NAME HERE], as outlined above?\nType: \"I Consent\"  or  \"I Do Not Consent\"\n\nNote, if you select 'I Do Not Consent', this chat will be terminated."
+                ],
+                "response_type": "text",
+                "selection_policy": "sequential"
+              }
+            },
+            "parent": "age-confidence-wrapper",
+            "context": {
+              "quick_reply_options": [
+                "I consent",
+                "I do not consent"
+              ]
+            },
+            "conditions": "$intent_confidence_achieved",
+            "dialog_node": "age-check-yes-confidence-achieved"
+          },
+          {
+            "type": "standard",
+            "title": "consent-confidence-wrapper",
+            "output": {
+              "generic": [
+                {
+                  "values": [],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "parent": "age-check-yes-confidence-achieved",
+            "context": {
+              "intent_confidence_achieved": "<? intents && intents.get(0).confidence > 0.99 ?>"
+            },
+            "next_step": {
+              "behavior": "skip_user_input"
+            },
+            "conditions": "#consent-agree",
+            "dialog_node": "consent-confidence-wrapper"
+          },
+          {
+            "type": "standard",
+            "title": "age-confidence-level-below",
+            "output": {
+              "generic": [
+                {
+                  "values": [
+                    {
+                      "text": "Sorry, I need you to say 'I am 21 or older'"
+                    }
+                  ],
+                  "response_type": "text",
+                  "selection_policy": "sequential"
+                }
+              ]
+            },
+            "parent": "age-confidence-wrapper",
+            "next_step": {
+              "behavior": "jump_to",
+              "selector": "body",
+              "dialog_node": "Welcome"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "age-confidence-level-below",
+            "previous_sibling": "age-check-yes-confidence-achieved"
+          },
+        {
+            "type": "standard",
+            "title": "age-check-no",
+            "output": {
+                "text": {
+                    "values": [
+                        "Unfortunately, you are not eligible for this survey. Please visit https://www.globalcitizen.org/en/ to learn more about how you can take action to address COVID-19 and https://ibm.com/skills to explore free learning."
+                    ],
+                    "response_type": "text",
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "Welcome",
+            "context": {
+                "quick_reply_options": []
+            },
+            "conditions": "#under-21",
+            "dialog_node": "age-check-no",
+            "previous_sibling": "age-confidence-wrapper"
+        },
+        {
+            "type": "standard",
+            "title": "age-check-no-anything-else",
+            "parent": "age-check-no",
+            "context": {
+                "quick_reply_options": []
+            },
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "age-check-no-anything-else-followup"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "age-check-no-anything-else"
+        },
+        {
+            "type": "standard",
+            "title": "age-check-no-anything-else-followup",
+            "output": {
+                "text": {
+                    "values": [
+                        "Unfortunately, you are not eligible for this survey. Please visit https://www.globalcitizen.org/en/ to learn more about how you can take action to address COVID-19 and https://ibm.com/skills to explore free learning. If you made a mistake, please tell me \"start again\" to try again."
+                    ],
+                    "response_type": "text",
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "age-check-no-anything-else",
+            "context": {
+                "quick_reply_options": []
+            },
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "user_input",
+                "dialog_node": "age-check-no-anything-else"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "age-check-no-anything-else-followup"
+        },
+        {
+            "type": "standard",
+            "title": "age-check-anything-else",
+            "output": {
+                "text": {
+                    "values": ["Sorry, I might have misunderstood your response."],
+                    "response_type": "text",
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "Welcome",
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "Welcome"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "age-check-anything-else",
+            "previous_sibling": "age-check-no"
+        },
+        {
+            "type": "standard",
+            "title": "consent-yes-confidence-achieved",
+            "output": {
+              "text": {
+                "values": [
+                  "Thank you."
+                ],
+                "selection_policy": "sequential"
+              }
+            },
+            "parent": "consent-confidence-wrapper",
+            "context": {
+              "quick_reply_options": []
+            },
+            "metadata": {},
+            "next_step": {
+              "behavior": "jump_to",
+              "selector": "body",
+              "dialog_node": "additional-introduction"
+            },
+            "conditions": "$intent_confidence_achieved",
+            "description": "",
+            "dialog_node": "consent-yes-confidence-achieved"
+          },
+          {
+            "type": "standard",
+            "title": "consent-confidence-level-below",
+            "parent": "consent-confidence-wrapper",
+            "next_step": {
+              "behavior": "jump_to",
+              "selector": "body",
+              "dialog_node": "consent-anything-else"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-confidence-level-below",
+            "previous_sibling": "consent-yes-confidence-achieved"
+          },
+        {
+            "type": "standard",
+            "title": "additional-introduction",
+            "output": {
+                "text": {
+                    "values": ["[REPLACE_WITH_CAMPAIGN_INTRODUCTION]"],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "consent-yes-confidence-achieved",
+            "context": {
+                "is_demographic_over": true,
+                "quick_reply_options": []
+            },
+            "metadata": {},
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "campaign-question-1"
+            },
+            "conditions": "",
+            "description": "",
+            "dialog_node": "additional-introduction",
+            "previous_sibling": null
+        },
+        {
+            "type": "standard",
+            "title": "consent-no",
+            "output": {
+              "text": {
+                "values": [
+                  "Sorry to hear that, we'll have to leave the conversation there. If you want to try again, tell me \"start again\""
+                ],
+                "selection_policy": "sequential"
+              }
+            },
+            "parent": "age-check-yes-confidence-achieved",
+            "context": {
+              "quick_reply_options": []
+            },
+            "metadata": {},
+            "conditions": "#consent-disagree",
+            "description": "",
+            "dialog_node": "consent-no",
+            "previous_sibling": "consent-confidence-wrapper"
+          },
+        {
+            "type": "standard",
+            "title": "consent-anything-else",
+            "output": {
+              "text": {
+                "values": [
+                  "I'm sorry, I need you to respond with 'I consent' or 'I do not consent' otherwise we won't be able to proceed."
+                ],
+                "selection_policy": "sequential"
+              }
+            },
+            "parent": "age-check-yes-confidence-achieved",
+            "context": {
+              "quick_reply_options": [
+                "I consent",
+                "I do not consent"
+              ]
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-anything-else",
+            "previous_sibling": "consent-no"
+          },
+          {
+            "type": "standard",
+            "title": "consent-anything-else-wrapper",
+            "parent": "consent-anything-else",
+            "context": {
+              "intent_confidence_achieved": "<? intents && intents.get(0).confidence > 0.99 ?>"
+            },
+            "next_step": {
+              "behavior": "skip_user_input"
+            },
+            "conditions": "#consent-agree",
+            "dialog_node": "consent-anything-else-wrapper"
+          },
+          {
+            "type": "standard",
+            "title": "consent-anything-else-confidence-below",
+            "parent": "consent-anything-else-wrapper",
+            "next_step": {
+              "behavior": "jump_to",
+              "selector": "body",
+              "dialog_node": "consent-anything-else-repeated"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-anything-else-confidence-below",
+            "previous_sibling": "consent-anything-else-confidence-achieved"
+          },
+          {
+            "type": "standard",
+            "title": "consent-anything-else-confidence-achieved",
+            "parent": "consent-anything-else-wrapper",
+            "next_step": {
+              "behavior": "jump_to",
+              "selector": "body",
+              "dialog_node": "additional-introduction"
+            },
+            "conditions": "$intent_confidence_achieved",
+            "dialog_node": "consent-anything-else-confidence-achieved"
+          },
+        {
+            "type": "standard",
+            "title": "consent-anything-else-repeated",
+            "parent": "consent-anything-else",
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "consent-anything-else"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-anything-else-repeated",
+            "previous_sibling": "consent-anything-else-disagree"
+        },
+        {
+            "type": "standard",
+            "title": "consent-anything-else-disagree",
+            "parent": "consent-anything-else",
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "consent-no"
+            },
+            "conditions": "#consent-disagree",
+            "dialog_node": "consent-anything-else-disagree",
+            "previous_sibling": "consent-anything-else-wrapper"
+        },
+        {
+            "type": "standard",
+            "title": "consent-no-anything-else",
+            "output": {
+                "text": {
+                    "values": [],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "consent-no",
+            "metadata": {},
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "body",
+                "dialog_node": "consent-no-anything-else-followup"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-no-anything-else"
+        },
+        {
+            "type": "standard",
+            "title": "Q - Who is running this campaign?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#who-is-doing-this",
+            "description": "",
+            "dialog_node": "Q-Who is running this campaign",
+            "previous_sibling": "Welcome"
+        },
+        {
+            "type": "standard",
+            "title": "Q - What will I be giving consent for?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#what-is-consent-for",
+            "description": "",
+            "dialog_node": "Q-What will I be giving consent for",
+            "previous_sibling": "Q-What is the purpose of this campaign"
+        },
+        {
+            "type": "standard",
+            "title": "Q - Who do I contact if I have an issue?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#who-do-I-contact",
+            "description": "",
+            "dialog_node": "Q-Who do I contact if I have an issue",
+            "previous_sibling": "Q-Will my answers be confidential"
+        },
+        {
+            "type": "standard",
+            "title": "Q - What is the purpose of this campaign?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#what-is-the-purpose",
+            "description": "",
+            "dialog_node": "Q-What is the purpose of this campaign",
+            "previous_sibling": "Q-What data will you ask for"
+        },
+        {
+            "type": "standard",
+            "title": "Q - Will my answers be confidential?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#will-it-be-confidential",
+            "description": "",
+            "dialog_node": "Q-Will my answers be confidential",
+            "previous_sibling": "Q-What will I be giving consent for"
+        },
+        {
+            "type": "standard",
+            "title": "Q - What data will you ask for?",
+            "output": {
+                "text": {
+                    "values": ["REPLACE_WITH_CAMPAIGN_ANSWER"]
+                }
+            },
+            "parent": null,
+            "context": null,
+            "metadata": {},
+            "next_step": null,
+            "conditions": "#what-will-be-asked-of-me",
+            "description": "",
+            "dialog_node": "Q-What data will you ask for",
+            "previous_sibling": "Q-Who is running this campaign"
+        },
+        {
+            "type": "standard",
+            "title": "end-campaign-thank-you",
+            "output": {
+                "text": {
+                    "values": [
+                        "Thank you. This is all the questions I have for you now. Your answers will help with our research."
+                    ],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": null,
+            "context": {
+                "set_finished": true,
+                "quick_reply_options": []
+            },
+            "metadata": null,
+            "next_step": null,
+            "conditions": "",
+            "description": "",
+            "dialog_node": "end-campaign-thank-you",
+            "previous_sibling": "Q-Who do I contact if I have an issue"
+        },
+        {
+            "type": "standard",
+            "title": "anything_else",
+            "output": {
+                "text": {
+                    "values": [
+                        "Looks like you've already answered the questions to this campaign or I may have misunderstood your intention."
+                    ],
+                    "selection_policy": "random"
+                }
+            },
+            "parent": null,
+            "context": {
+                "perform_nlu": true,
+                "is_unknown_response": true
+            },
+            "metadata": null,
+            "next_step": null,
+            "conditions": "anything_else",
+            "description": "",
+            "dialog_node": "anything_else",
+            "previous_sibling": "thank-you-response"
+        },
+        {
+            "type": "standard",
+            "title": "consent-no-anything-else-followup",
+            "output": {
+                "text": {
+                    "values": [
+                        "As consent was refused, we will need to restart the survey and ask you for your consent again, please tell me \"start again\" to allow me to continue."
+                    ],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": "consent-no-anything-else",
+            "metadata": {},
+            "next_step": {
+                "behavior": "jump_to",
+                "selector": "user_input",
+                "dialog_node": "consent-no-anything-else"
+            },
+            "conditions": "anything_else",
+            "dialog_node": "consent-no-anything-else-followup"
+        },
+        {
+            "type": "standard",
+            "title": "thank-you-response",
+            "output": {
+                "text": {
+                    "values": ["Bye!"],
+                    "selection_policy": "sequential"
+                }
+            },
+            "parent": null,
+            "context": {
+                "quick_reply_options": []
+            },
+            "metadata": null,
+            "next_step": null,
+            "conditions": "#thank-you || #general_goodbye",
+            "description": "",
+            "dialog_node": "thank-you-response",
+            "previous_sibling": "end-campaign-thank-you"
+        }
+    ],
+    "counterexamples": [],
+    "learning_opt_out": false
+}

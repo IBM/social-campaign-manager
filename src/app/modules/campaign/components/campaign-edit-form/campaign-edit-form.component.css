@@ -1,0 +1,68 @@
+.campaign-title {
+  border: 0;
+  border-radius: 0;
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.hidden {
+    display: none;
+}
+
+label {
+  font-size: 1.25rem;
+  font-weight: bolder;
+}
+
+label.label-sm {
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.question-card {
+  border-top: 1px solid #01ab8d;
+}
+
+.question-input {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #c3c2c2;
+  font-size: 1.75rem;
+}
+
+.question-input-sm {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid #c3c2c2;
+  font-size: 0.75rem;
+}
+
+.question-input-error {
+    border-bottom: 2px solid red;
+}
+
+.select-input-sm {
+  font-size: 0.75rem;
+}
+
+.border-watson {
+  border-color: #9a58ce !important;
+}
+
+.text-watson {
+  color: #9a58ce;
+}
+
+.hidden {
+    display: none;
+}
+
+code {
+    border: 1px solid #c3c2c2;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}

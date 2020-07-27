@@ -1,0 +1,274 @@
+/*
+
+Dark grey: #5f6266
+
+Red: #EA5B53
+Orange: #EDAF64
+Green: #9ECA6B
+
+*/
+
+.main-header .buttons {
+    text-align: right;
+}
+
+.page-background {
+    min-height: 100vh;
+}
+
+.campaign-header {
+    margin-right: 0;
+}
+
+/*
+Results Component
+*/
+.results-component {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.75);
+    border-radius: 7px;
+    border: 1px solid #ededed;
+    margin-bottom: 20px;
+}
+
+.results-component .title {
+    text-align: left;
+    border-bottom: 1px solid #ededed;
+}
+
+.results-component .title .title-text {
+    padding: 10px 0 10px 25px;
+    font-size: 1.25em;
+    color: #676767;
+}
+
+.smile-indicator {
+    display: inline-block;
+    text-align: center;
+    margin: 15px auto 15px auto;
+}
+
+.smile-indicator .fa-frown-o {
+    font-size: 6em;
+    color: #ea5b53;
+}
+
+.smile-indicator .fa-meh-o {
+    font-size: 6em;
+    color: #edaf64;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+.smile-indicator .fa-smile-o {
+    font-size: 6em;
+    color: #9eca6b;
+}
+
+.smile-indicator .item {
+    display: inline-block;
+}
+
+.smile-indicator .item p {
+    padding-top: 5px;
+}
+
+.explanation {
+    padding-top: 10px;
+    padding-bottom: 5px;
+}
+
+.results-component .value {
+    text-align: center;
+    font-size: 2em;
+    color: #676767;
+    padding-top: 15px;
+}
+
+/*
+Result sections
+*/
+
+.demographic-graph {
+    height: 370px;
+    padding: 10px;
+}
+
+.org-name {
+    text-align: left;
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+.org-count .count-box {
+    margin-left: auto;
+    margin-right: 0px;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+    color: white;
+}
+
+.org-count .count-box.negative {
+    background-color: #ea5b53;
+}
+
+.org-count .count-box.neutral {
+    background-color: #edaf64;
+}
+
+.org-count .count-box.positive {
+    background-color: #9eca6b;
+}
+
+.feed-section,
+.mention-section {
+    padding-top: 25px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.feed-row,
+.mention-row {
+    text-align: left;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.feed-row:not(:last-child),
+.mention-row:not(:last-child) {
+    box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.12);
+}
+
+.feed-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.feed-name a,
+.feed-name a:link,
+.feed-name a:visited,
+.feed-name a:hover,
+.feed-name a:active {
+    text-decoration: none;
+    color: #676767;
+}
+
+.feed-name {
+    font-size: 0.8em;
+}
+
+.feed-text {
+    font-size: 1.15em;
+    font-weight: bold;
+}
+
+.empty-message {
+    padding-bottom: 10px;
+}
+
+.mention-row .name {
+    display: block;
+    font-size: 1.15em;
+    font-weight: bold;
+    width: 100%;
+    padding-bottom: 25px;
+    text-align: center;
+}
+
+.mention-row .mention-phrases {
+    display: block;
+    width: 100%;
+}
+
+.mention-row .mention-phrases .negative {
+    display: inline-block;
+    width: 49%;
+    height: 100%;
+    padding-left: 30px;
+    padding-right: 50px;
+}
+
+.mention-row .mention-phrases .positive {
+    display: inline-block;
+    width: 49%;
+    height: 100%;
+    padding-left: 50px;
+    padding-right: 30px;
+}
+
+.mention-phrase-row {
+    display: table;
+    width: 100%;
+    padding-bottom: 5px;
+}
+
+.mention-row .mention-phrases .word {
+    display: table-cell;
+}
+
+.mention-row .mention-phrases .count {
+    display: table-cell;
+    color: white;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+}
+
+.mention-row .mention-phrases .count .count-box {
+    margin-bottom: auto;
+    width: 25px;
+    height: 25px;
+    border-radius: 3px;
+}
+
+.mention-row .mention-phrases .negative .count .count-box {
+    background-color: #ea5b53;
+}
+
+.mention-row .mention-phrases .positive .count .count-box {
+    background-color: #9eca6b;
+}
+
+/**
+ * Answers
+ */
+
+.navicons {
+    color: #ed5a5a;
+}
+
+.free_form_answers {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.unknown_answers {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.NEGATIVE {
+    color: #ea5b53;
+}
+
+.NEUTRAL {
+    color: #edaf64;
+}
+
+.POSITIVE {
+    color: #9eca6b;
+}
+
+.MIXED {
+    color: #7c7dec;
+}
+
+.NONE {
+    color: #5f6266;
+}
+
+.question-results-card {
+    min-height: 300px;
+}

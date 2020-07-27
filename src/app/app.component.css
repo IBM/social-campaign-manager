@@ -1,0 +1,87 @@
+/* .navbar-toggler {
+    margin-top: 5px;
+    margin-left: 0px;
+    padding-left: 0px;
+    text-align: left;
+    width: 30px;
+    outline: none;
+}
+
+.navbar-toggler span {
+    width: 29px;
+} */
+
+.navbar-toggler-icon {
+    color: #ffffff;
+}
+
+.nav-link {
+    color: #fff;
+}
+
+.nav-link.disabled {
+    color: #636c72;
+}
+
+button.navbar-toggler {
+    line-height: inherit;
+    margin-right: 10px;
+}
+
+.login,
+.logout {
+    position: absolute;
+    top: 17px;
+    right: 15px;
+    color: #212529;
+}
+
+.logout div {
+    display: inline-block;
+    margin-right: 25px;
+    vertical-align: bottom;
+}
+
+.login button,
+.logout button {
+    margin-top: 0px;
+}
+
+.nav-link.active {
+    border-bottom: 4px solid #0004ff;
+}
+
+.bg-custom-dark {
+    background-color: #111;
+    color: #fff;
+    border-bottom: 1px solid #e3e3e3;
+}
+
+.useraction {
+    cursor: pointer;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+}
+
+.navicons {
+    color: #fff;
+}
+
+.nav-item {
+    color: #000;
+    font-size: 22px;
+    font-weight: 400;
+}
+
+.navbar-brand {
+    color: #fff;
+    font-size: 12px;
+    margin-top: 3px;
+}
+
+.navbar-brand:hover {
+    color: #fff;
+    font-size: 12px;
+}

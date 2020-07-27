@@ -1,0 +1,233 @@
+{
+    "views": [{
+            "db_name": "campaigns",
+            "view_doc": {
+                "_id": "_design/campaigns_hashtags",
+                "language": "query",
+                "views": {
+                    "foo-json-index": {
+                        "map": {
+                            "fields": {
+                                "metadata.workspace_hashtag": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "metadata.workspace_hashtag"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "campaigns",
+            "view_doc": {
+                "_id": "_design/78b5a0a44ce87abe630340ea570558797858edc9",
+                "language": "query",
+                "views": {
+                    "foo-json-index": {
+                        "map": {
+                            "fields": {
+                                "updated": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "updated"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "campaigns",
+            "view_doc": {
+                "_id": "_design/90ceaadab1a5d59fc806a1a7a27355dc02f6dcc3",
+                "language": "query",
+                "views": {
+                    "workspace_id-json-index": {
+                        "map": {
+                            "fields": {
+                                "workspace_id": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "workspace_id"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "campaigns",
+            "view_doc": {
+                "_id": "_design/cb7686573da64abc0fa6a15e69eb9373bef6eaa2",
+                "language": "query",
+                "views": {
+                    "foo-json-index": {
+                        "map": {
+                            "fields": {
+                                "metadata.workspace_tweet_id": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "metadata.workspace_tweet_id"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "campaigns",
+            "view_doc": {
+                "_id": "_design/e006dc3b0639ddb023e70d7e60473f55ccfc33d5",
+                "language": "query",
+                "views": {
+                    "foo-json-index": {
+                        "map": {
+                            "fields": {
+                                "metadata.workspace_picker_intent": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "metadata.workspace_picker_intent"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "profiles",
+            "view_doc": {
+                "_id": "_design/campaign",
+                "language": "javascript",
+                "views": {
+                    "results": {
+                        "map": "function (doc) {\n  var keys = Object.keys(doc.campaigns);\n  keys.forEach(function(key) {\n    emit(key, {age: doc.age, gender: doc.gender, locationData: doc.locationData, finished: doc.campaigns[key].finished});\n  });\n}",
+                        "reduce": "function (keys, values, rereduce) {\n  var result = blankResultObj();\n  \n  if (rereduce) {\n    values.forEach(function(val) {\n      if (Array.isArray(val)) {\n        val.forEach(function(innerVal) {\n          mergeTwoResultsObjects(result, innerVal);\n        });\n      } else {\n        mergeTwoResultsObjects(result, val);\n      }\n    });\n    \n    result.percentageComplete = +((result.completed / (result.completed + result.incomplete)) * 100 ).toFixed(2);\n    \n  } else {\n    // In turn, take each document and transform into a new document, recording each attempt at a campaign\n    values.forEach(function(val) {\n      var option = (val.finished ? \"completed\" : \"incomplete\");\n      result[option]++;\n      \n      processDemographics(result, val);\n    });\n  }\n  \n  return result;\n  \n  \n  \n  /**\n   * Inner functions to make logic more concise\n   */\n   function blankResultObj() {\n     return { \n       completed: 0, \n       incomplete: 0, \n       percentageComplete: 0,\n       ageRanges: [\n         {label: \"<18\", count: 0}, \n         {label: \"18 - 24\", count: 0}, \n         {label: \"25 - 34\", count: 0}, \n         {label: \"35 - 44\", count: 0}, \n         {label: \"45 - 54\", count: 0}, \n         {label: \"55 - 64\", count: 0}, \n         {label: \"65+\", count: 0}\n       ],\n       gender: [\n         {label: \"Male\", count: 0},\n         {label: \"Female\", count: 0},\n         {label: \"Other\", count: 0},\n         {label: \"None\", count: 0}\n       ],\n       locations: {}\n     }\n   }\n   \n   function mergeTwoResultsObjects(result1, result2) {\n     result1.completed += result2.completed;\n     result1.incomplete += result2.incomplete;\n     \n     result1.ageRanges.forEach(function(age, index) {\n       result1.ageRanges[index].count += result2.ageRanges[index].count;\n     });\n     \n     result1.gender.forEach(function(age, index) {\n       result1.gender[index].count += result2.gender[index].count;\n     });\n     \n    \n    \n    var result2Locations = Object.keys(result2.locations);\n    result2Locations.forEach(function(address) {\n      if (!result1.locations[address]) {\n         result1.locations[address] = result2.locations[address];\n      } else {\n      result1.locations[address].count += result2.locations[address].count;\n    }\n    }); \n\n     return result1;\n   }\n   \n   function processDemographics(result, value) {\n     if (value.age < 18) {\n\t\t\t\tresult.ageRanges[0].count += 1;\n\t\t\t} else if (value.age <= 24) {\n\t\t\t\tresult.ageRanges[1].count += 1;\n\t\t\t} else if (value.age <= 34) {\n\t\t\t\tresult.ageRanges[2].count += 1;\n\t\t\t} else if (value.age <= 44) {\n\t\t\t\tresult.ageRanges[3].count += 1;\n\t\t\t} else if (value.age <= 54) {\n\t\t\t\tresult.ageRanges[4].count += 1;\n\t\t\t} else if (value.age <= 64) {\n\t\t\t\tresult.ageRanges[5].count += 1;\n\t\t\t} else {\n\t\t\t\tresult.ageRanges[6].count += 1;\n\t\t\t}\n\t\t\t\n\t\t\tif (value.gender === \"male\") {\n\t\t\t\tresult.gender[0].count += 1;\n\t\t\t} else if (value.gender === \"female\") {\n\t\t\t\tresult.gender[1].count += 1;\n\t\t\t} else if (value.gender === \"other\") {\n\t\t\t\tresult.gender[2].count += 1;\n\t\t\t} else {\n\t\t\t\tresult.gender[3].count += 1;\n\t\t\t}\n\t\t\t\n\t\t\tif(value.locationData && value.locationData.address && value.locationData !== null){\n\t\t\t  if (!result.locations[value.locationData.address]) {\n\t\t\t  result.locations[value.locationData.address] = value.locationData;\n\t\t\t  result.locations[value.locationData.address].count = 1;\n\t\t\t} else {\n\t\t\t  result.locations[value.locationData.address].count += 1;\n\t\t\t}\n\t\t\t} \n\n\n   }\n}"
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "profiles",
+            "view_doc": {
+                "_id": "_design/aad4487fd51d2e3a654ac3b42de28261f8c174f7",
+                "language": "query",
+                "views": {
+                    "socialMediaId-json-index": {
+                        "map": {
+                            "fields": {
+                                "socialMediaId": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "socialMediaId"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "responses",
+            "view_doc": {
+                "_id": "_design/campaign",
+                "language": "javascript",
+                "views": {
+                    "results": {
+                        "map": "function (doc) {\n  if (doc.campaignId) {\n    emit(doc.campaignId, doc);\n  }\n}",
+                        "reduce": "function (keys, values, rereduce) {\n  var result = blankResultObj();\n  \n  if (rereduce) {\n    // If rereduce, merge results together. Each element in `values` can be a value, or an array of values\n    values.forEach(function(val) {\n      if (Array.isArray(val)) {\n        val.forEach(function(innerVal) {\n          mergeTwoResultsObjects(result, innerVal);\n        });\n      } else {\n        mergeTwoResultsObjects(result, val);\n      }\n    });\n  } else {\n    // If not rereduce, aggregate results from cloudant docs into the `blankResultObj()`\n    values.forEach(function(val) {\n      aggregateSentiment(result, val);\n      aggregateEmotion(result, val);\n      countResponseTypes(result, val);\n      processAnswers(result, val);\n    });\n  }\n    \n  return result;\n  \n  \n  \n  \n  /**\n   * Inner functions to make logic more concise\n   */\n   function blankResultObj() {\n     return {\n       overallSentiment: { positive: { count: 0, total: 0 }, negative: { count: 0, total: 0 }, neutral: { count: 0, total: 0 } },\n       overallEmotion: { count: 0, anger: 0, disgust: 0, fear: 0, sadness: 0, joy: 0 },\n       numberOfTweets: 0,\n       numberOfDms: 0,\n       singularAnswers: {},\n       multipleChoiceAnswers: {},\n       unknownEntities: {},\n       whyAnswers: { keywords: {}, entities: {}, categories: {} },\n       whyAnswersForUnknown: { keywords: {}, entities: {}, categories: {} }\n     };\n   }\n   \n   function mergeTwoResultsObjects(result1, result2) {\n     result1.numberOfTweets += result2.numberOfTweets;\n     result1.numberOfDms += result2.numberOfDms;\n     \n     addOrMergeObjects(result1, result2, \"overallSentiment\");\n     addOrMergeObjects(result1, result2, \"overallEmotion\");\n     addOrMergeObjects(result1, result2, \"singularAnswers\");\n     addOrMergeObjects(result1, result2, \"multipleChoiceAnswers\");\n     addOrMergeObjects(result1, result2, \"unknownEntities\");\n     \n     [\"whyAnswers\", \"whyAnswersForUnknown\"].forEach(function(resultKey) {\n       addOrMergeObjects(result1[resultKey], result2[resultKey], \"keywords\");\n       addOrMergeObjects(result1[resultKey], result2[resultKey], \"entities\");\n       addOrMergeObjects(result1[resultKey], result2[resultKey], \"categories\");\n     });\n   }\n   \n   /**\n    * Function to merge 2 objectss by adding its values, or copying the whole object if none exists\n    */\n   function addOrMergeObjects(result1, result2, propertyToFetchOuterKeys) {\n     var outerKeys = Object.keys(result2[propertyToFetchOuterKeys]);\n     outerKeys.forEach(function(outerKey) {\n       // If no record of outer key, copy whole object / answer\n       if (!result1[propertyToFetchOuterKeys][outerKey]) {\n         result1[propertyToFetchOuterKeys][outerKey] = result2[propertyToFetchOuterKeys][outerKey];\n       } else {\n         \n         if (typeof(result2[propertyToFetchOuterKeys][outerKey]) === 'number') {\n           // If `propertyToFetchOuterKeys` is a collection of key / value pairs, add the numbers together\n           result1[propertyToFetchOuterKeys][outerKey] += result2[propertyToFetchOuterKeys][outerKey];\n         } else {\n           // Else check if value is object then merge values, else add result\n           var innerKeys = Object.keys(result2[propertyToFetchOuterKeys][outerKey]);\n           \n           if (innerKeys && Array.isArray(innerKeys)) {\n             innerKeys.forEach(function(innerKey) {\n               if (!result1[propertyToFetchOuterKeys][outerKey][innerKey]) {\n                 result1[propertyToFetchOuterKeys][outerKey][innerKey] = result2[propertyToFetchOuterKeys][outerKey][innerKey];\n               } else {\n                 result1[propertyToFetchOuterKeys][outerKey][innerKey] += result2[propertyToFetchOuterKeys][outerKey][innerKey];\n               }\n             });\n           }\n         }\n       }\n     });\n   }\n   \n   function aggregateSentiment(result, value) {\n     // Add together all the sentiment socres, but shift the range so they can be displayed together.\n     // Adding 1 to all results (as neutral is always 0), and turning the negative results into positive\n     if (value.sentiment) {\n       if (value.sentiment.document.label === \"positive\") {\n         result.overallSentiment.positive.count += 1;\n         result.overallSentiment.positive.total += (value.sentiment.document.score + 1);\n         \n       } else if (value.sentiment.document.label === \"negative\") {\n         result.overallSentiment.negative.count += 1;\n         result.overallSentiment.negative.total += ((value.sentiment.document.score * -1) + 1);\n         \n       } else {\n         result.overallSentiment.neutral.count += 1;\n         result.overallSentiment.neutral.total += 1;\n       }\n     }\n   }\n   \n   function aggregateEmotion(result, value) {\n     if (value.emotion && value.emotion.document && value.emotion.document.emotion) {\n        var emotion = value.emotion.document.emotion;\n        result.overallEmotion.count += 1;\n        result.overallEmotion.anger += (emotion.anger ? emotion.anger : 0);\n        result.overallEmotion.disgust += (emotion.disgust ? emotion.disgust : 0);\n        result.overallEmotion.fear += (emotion.fear ? emotion.fear : 0);\n        result.overallEmotion.sadness += (emotion.sadness ? emotion.sadness : 0);\n        result.overallEmotion.joy += (emotion.joy ? emotion.joy : 0);\n      }\n   }\n   \n   function countResponseTypes(result, value) {\n     if (value.socialMediaObjectType) {\n        switch (value.socialMediaObjectType) {\n          case \"tweet\":\n            result.numberOfTweets += 1;\n            break;\n          case \"direct-message\":\n            result.numberOfDms += 1;\n            break;\n        }\n      }\n   }\n   \n   function processAnswers(result, value) {\n     if (value.conversationNodeId) {\n       \n       if (value.isSingularAnswer) {\n         \n         // Handle singular answers only\n         if (!result.singularAnswers[value.conversationNodeId]) {\n           result.singularAnswers[value.conversationNodeId] = { no: 0, maybe: 0, yes: 0, all: 0, none: 0 };\n         }\n         \n         switch (value.singularAnswer) {\n           case 0:\n             result.singularAnswers[value.conversationNodeId].no += 1;\n             break;\n           case 1:\n             result.singularAnswers[value.conversationNodeId].maybe += 1;\n             break;\n           case 2:\n             result.singularAnswers[value.conversationNodeId].yes += 1;\n             break;\n           case 3:\n             result.singularAnswers[value.conversationNodeId][\"all\"] += 1;\n             break;\n           case 4:\n             result.singularAnswers[value.conversationNodeId].none += 1;\n             break;\n         }\n       } else if (value.isMultipleChoice) {\n         \n         // handle Multiple choice answers only\n         if (!result.multipleChoiceAnswers[value.conversationNodeId]) {\n           result.multipleChoiceAnswers[value.conversationNodeId] = {};\n         }\n         \n         value.multipleChoiceAnswer.forEach(function(singleAnswer) {\n           if (!result.multipleChoiceAnswers[value.conversationNodeId][singleAnswer]) {\n             result.multipleChoiceAnswers[value.conversationNodeId][singleAnswer] = 1;\n           } else {\n             result.multipleChoiceAnswers[value.conversationNodeId][singleAnswer] += 1;\n           }\n         });\n         \n         // unknown entities mentioned for multiple choice questions\n         if (value.unknownEntities) {\n           value.unknownEntities.forEach(function(entity) {\n             var entityText = (entity.disambiguation ? entity.disambiguation.name : entity.text);\n             \n             if (!result.unknownEntities[entityText]) {\n               result.unknownEntities[entityText] = { count: 0, positive: 0, negative: 0, neutral: 0 };\n             }\n             \n             result.unknownEntities[entityText].count += 1;\n             if (entity.sentiment) {\n               if (entity.sentiment.score > 0) {\n                 result.unknownEntities[entityText].positive += 1;\n               } else if (entity.sentiment.score < 0) {\n                 result.unknownEntities[entityText].negative += 1;\n               } else {\n                 result.unknownEntities[entityText].neutral += 1;\n               }\n             }\n           });\n         }\n       } else if (value.isWhyAnswer || value.isWhyAnswerForUnknown) {\n         \n         // Why answers and Why for Unknown both have the same structure, but need to be separated for display purposes\n         var resultVariableName = (value.isWhyAnswer ? \"whyAnswers\" : \"whyAnswersForUnknown\");\n         \n         // keywords\n         value.keywords.forEach(function(keyword) {\n           if (!result[resultVariableName].keywords[keyword.text]) {\n             result[resultVariableName].keywords[keyword.text] = { count: 0, positive: 0, negative: 0, neutral: 0 };\n           }\n           \n           result[resultVariableName].keywords[keyword.text].count += 1;\n           if (keyword.sentiment) {\n             if (keyword.sentiment.score > 0) {\n               result[resultVariableName].keywords[keyword.text].positive += 1;\n               \n             } else if (keyword.sentiment.score < 0) {\n               result[resultVariableName].keywords[keyword.text].negative += 1;\n               \n             } else {\n               result[resultVariableName].keywords[keyword.text].neutral += 1;\n             }\n           }\n         });\n         \n         // entities\n         value.entities.forEach(function(entity) {\n           var entityText = (entity.disambiguation ? entity.disambiguation.name : entity.text);\n           \n           if (!result[resultVariableName].entities[entityText]) {\n             result[resultVariableName].entities[entityText] = { count: 0, positive: 0, negative: 0, neutral: 0 };\n           }\n           \n           result[resultVariableName].entities[entityText].count += 1;\n           if (entity.sentiment) {\n             if (entity.sentiment.score > 0) {\n               result[resultVariableName].entities[entityText].positive += 1;\n               \n             } else if (entity.sentiment.score < 0) {\n               result[resultVariableName].entities[entityText].negative += 1;\n               \n             } else {\n               result[resultVariableName].entities[entityText].neutral += 1;\n             }\n           }\n         });\n           \n         // categories\n         value.categories.forEach(function(category) {\n           if (category.score >= 0.3)  { // Random number at this point based on examining some data\n             var pieces = category.label.split(\"/\");\n             var lastPiece = pieces[pieces.length - 1];\n            \n             if (!result[resultVariableName].categories[lastPiece]) {\n               result[resultVariableName].categories[lastPiece] = { count: 0, positive: 0, negative: 0, neutral: 0, fullText: \"\" };\n             }\n           \n             result[resultVariableName].categories[lastPiece].count += 1;\n             result[resultVariableName].categories[lastPiece].fullText = category.label;\n             \n             // take the sentiment of the overall text, as category is based on overall text\n             if (value.sentiment) {\n               if (value.sentiment.document.score > 0) {\n                 result[resultVariableName].categories[lastPiece].positive += 1;\n               } else if (value.sentiment.document.score < 0) {\n                 result[resultVariableName].categories[lastPiece].negative += 1;\n               } else {\n                 result[resultVariableName].categories[lastPiece].neutral += 1;\n               }\n             }\n           }\n         });\n       } \n     }\n\t}\n}"
+                    },
+                    "unknown-responses": {
+                        "reduce": "function (keys, values, rereduce) {\n  var result = {};\n  \n  if (rereduce) {\n    values.forEach(function(val) {\n      if (Array.isArray(val)) {\n        val.forEach(function(innerVal) {\n          mergeTwoResultsObjects(result, innerVal);\n        });\n      } else {\n        mergeTwoResultsObjects(result, val);\n      }\n    });\n    \n  } else {\n    values.forEach(function(val) {\n      if (!result[val.conversationNodeId]) {\n        result[val.conversationNodeId] = [];\n      }\n      \n      result[val.conversationNodeId].push({_id: val._id, _rev: val._rev, response: val.rawMessage, senderId: val.socialMediaObject.sender_screen_name});\n    });\n  }\n  \n  return result;\n  \n  \n  \n  \n  function mergeTwoResultsObjects(result1, result2) {\n    var outerKeys = Object.keys(result2);\n     outerKeys.forEach(function(outerKey) {\n       if (!result1[outerKey]) {\n         result1[outerKey] = result2[outerKey];\n       } else {\n         result1[outerKey] = result1[outerKey].concat(result2[outerKey]);\n       }\n     });\n  }\n}",
+                        "map": "function (doc) {\n  if (doc.isUnknownResponse) {\n    emit(doc.campaignId, doc);\n  }\n}"
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "responses",
+            "view_doc": {
+                "_id": "_design/97ec06da3f2a526257d93567b24776e2963358c7",
+                "language": "query",
+                "views": {
+                    "foo-json-index": {
+                        "map": {
+                            "fields": {
+                                "timestamp": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "timestamp"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "db_name": "tweets",
+            "view_doc": {
+                "_id": "_design/769088ce7bcddfcf6aa2f5733e6c4f7ae35abdd0",
+                "language": "query",
+                "views": {
+                    "campaignid-index": {
+                        "map": {
+                            "fields": {
+                                "campaignId": "asc"
+                            },
+                            "partial_filter_selector": {}
+                        },
+                        "reduce": "_count",
+                        "options": {
+                            "def": {
+                                "fields": [
+                                    "campaignId"
+                                ]
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

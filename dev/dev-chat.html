@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Social Campaign Manager - Dev Chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+            color: rgb(39, 36, 36)
+        }
+
+        form {
+            padding: 3px;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            border-top: 1px solid rgb(39, 36, 36);
+            align-self: flex-end;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 84%;
+            margin-right: 1%;
+            border: 2px solid rgb(39, 36, 36);
+        }
+
+        form button {
+            width: 15%;
+            background: #ED5A5A;
+            color: #ffffff;
+            border: rgb(216, 73, 73);
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            align-self: stretch;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-box {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            height: 550px;
+            width: 400px;
+            border: 1px solid rgb(39, 36, 36);
+        }
+
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>IBM Social Campaign Manager</h1>
+        <div class="chat-box">
+            <ul id="messages"></ul>
+            <form action="">
+                <input id="m" autocomplete="off" /><button>Send</button>
+            </form>
+        </div>
+    </div>
+    <script src="/scripts/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            var socket = io.connect();
+            $('form').submit(function (e) {
+                e.preventDefault(); // prevents page reloading
+                socket.emit('chat-message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+
+            socket.on('chat-message', function (msg) {
+                $('#messages').append($('<li>').text(msg));
+            });
+
+            $('#m').focus();
+        });
+    </script>
+</body>
+
+</html>

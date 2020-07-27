@@ -1,0 +1,242 @@
+<div class="bg-light mb-0 page-background">
+    <ng-template #modalContent let-close="close" let-dismiss="dismiss">
+        <div class="modal-header">
+            <h4 class="modal-title">Are you sure you want to delete?</h4>
+            <button type="button" class="close" aria-label="Dismiss" (click)="dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            This will cause all the data gathered in <code>{{campaign.name}}</code> to be lost.
+            Please confirm the name of the campaign you want to delete:
+            <input type="text" [(ngModel)]="confirmDelete">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" [disabled]="confirmDelete != campaign.name"
+                (click)="close('Delete click')">Delete forever</button>
+            <button type="button" class="btn btn-outline-dark" (click)="dismiss('Keep click')">No, I want to keep the
+                campaign</button>
+        </div>
+    </ng-template>
+    <spinner class="m-5" *ngIf="loadingCampaign"></spinner>
+    <div *ngIf="!loadingCampaign">
+        <!-- Header with title, description and buttons -->
+        <div class="row p-3 mb-2 bg-white border-bottom campaign-header">
+            <div class="col-md-1 col-sm-1 pl-5 pt-3 pr-0">
+                <a routerLink="/campaigns" class="text-dark">
+                    <i class="fa fa-arrow-left"></i> Back
+                </a>
+            </div>
+            <div class="col-md-9 col-sm-8">
+                <h1>{{campaign.name}}</h1>
+                <small class="text-muted">{{campaign.description}}</small>
+            </div>
+            <div class="col-md-2 col-sm-12 text-right pr-5">
+                <a class="btn btn-secondary" routerLink="/chat/{{campaignId}}">
+                    <i class="fa fa-comments-o"></i></a>
+                <a class="btn btn-primary" routerLink="/campaign/{{campaignId}}/edit">
+                    Edit <i class="fa fa-pencil"></i></a>
+            </div>
+        </div>
+
+        <!-- Campaign Results -->
+        <spinner class="m-5" *ngIf="loadingResults"></spinner>
+        <div class="container">
+            <div *ngIf="!loadingResults" class="mx-3">
+                <!-- Metrics -->
+                <h3>Metrics</h3>
+                <div class="row mb-5">
+                    <div class="col">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">UNIQUE USERS</small>
+                                <div class="card-text">
+                                    <h2 class="mt-2">
+                                        {{ metrics.uniqueUsers }}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">COMPLETION RATE</small>
+                                <div class="card-text">
+                                    <h2 class="mt-2">
+                                        {{ metrics.percentageComplete }}%
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">DIRECT MESSAGES</small>
+                                <div class="card-text">
+                                    <h2 class="mt-2">
+                                        {{metrics.directMessages}}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">DAYS RUNNING</small>
+                                <div class="card-text">
+                                    <h2 class="mt-2">
+                                        {{metrics.daysRunning}}
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Overview of sentiment and emotion -->
+                <div class="row">
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">SENTIMENT</small>
+                                <div class="card-text">
+                                    <pie-chart [data]="campaignResults.overallSentiment">
+                                    </pie-chart>
+                                </div>
+                                <div class="text-center text-muted">
+                                    <small>Overall campaign sentiment:
+                                        <span [ngClass]="getOverallSentimentCaption()">
+                                            {{getOverallSentimentCaption()}}
+                                        </span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12 mb-3">
+                        <div class="card pb-3">
+                            <div class="card-body">
+                                <small class="card-title">EMOTION</small>
+                                <div class="card-text">
+                                    <bar-chart [data]="campaignResults.overallEmotion" [displayLegend]="false">
+                                    </bar-chart>
+                                </div>
+                                <div class="text-center pt-2">
+                                    <small class="text-muted" placement="top" ngbTooltip="Probability Score (0-1)">
+                                        Sum of Overall Campaign Emotions Probabilities
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2 class="mb-4">Participant responses</h2>
+                <!-- Yes / No Answers -->
+                <h3 *ngIf="viewFilterQuestionsByType('yes_no_maybe').length" class="mb-2">Yes / No Answers</h3>
+                <div *ngIf="viewFilterQuestionsByType('yes_no_maybe').length" class="row mb-3">
+                    <div *ngFor="let question of viewFilterQuestionsByType('yes_no_maybe')" class="col-md-4 mb-3">
+                        <div class="card question-results-card">
+                            <div class="card-body text-center">
+                                <h5>{{ question.text }}</h5>
+                                <div>
+                                    <pie-chart [data]="question.graphData"></pie-chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 *ngIf="viewFilterQuestionsByType('multiple_choice').length"
+                    class="mb-2">Multiple Choice Answers</h3>
+                <div *ngIf="viewFilterQuestionsByType('multiple_choice').length" class="row mb-3">
+                    <div *ngFor="let question of viewFilterQuestionsByType('multiple_choice')" class="col-md-4 mb-3">
+                        <div class="card question-results-card">
+                            <div class="card-body text-center">
+                                <h5>{{ question.text }}</h5>
+                                <div>
+                                    <bar-chart [displayLegend]="false" [data]="question.graphData"></bar-chart>
+                                </div>
+                                <small *ngIf="question.all">
+                                    {{ question.all }} {{ question.all == 1 ? 'person' : 'people'}} chose
+                                    <em>all</em> options.
+                                </small>
+                                <br />
+                                <small *ngIf="question.none">
+                                    Additionally, {{ question.none }} {{ question.none === 1 ? 'person' : 'participants' }} said <em>none of the above</em>.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3 *ngIf="viewFilterQuestionsByType('free_form').length" class="mb-2">Free Form Answers</h3>
+                <div *ngIf="viewFilterQuestionsByType('free_form').length" class="row mb-3">
+                    <div *ngFor="let question of viewFilterQuestionsByType('free_form')"class="col-12">
+                        <div class="card p-3 mb-4">
+                            <div class="card-body">
+                                <h5 class="pb-2">{{ question.text }} </h5>
+                                <tabs>
+                                    <tab tabTitle="Classification">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <campaign-mention-panel title="KEYWORDS"
+                                                    [items]="question.nlu.keywords">
+                                                </campaign-mention-panel>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <campaign-mention-panel title="MENTIONS"
+                                                    [items]="question.nlu.entities">
+                                                </campaign-mention-panel>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <campaign-mention-panel title="CATEGORISATION"
+                                                    [items]="question.nlu.categories">
+                                                </campaign-mention-panel>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                    <tab tabTitle="Answers">
+                                        <div *ngIf="!question.answers.length" class="text-muted p-4">
+                                            <small>NO RESPONSES YET</small>
+                                        </div>
+                                        <div *ngIf="question.answers.length" class="text-muted pl-2 pt-3">
+                                            <small>FREE FORM RESPONSES</small></div>
+                                        <div class="free_form_answers pt-1">
+                                            <div *ngFor="let answer of question.answers" class="border-top my-2 pt-2">
+                                                <em>{{answer}}</em>
+                                            </div>
+                                        </div>
+                                    </tab>
+                                </tabs>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Unknown responses -->
+                <h3 class="mb-2">What else are people talking about?</h3>
+                <div class="row pb-3">
+                    <div class="col">
+                        <div class="card p-1">
+                            <div class="card-body">
+                                <div *ngFor="let unknown of unknownResponses" class="my-3 unknown_answers">
+                                    <small class="text-muted">
+                                        In response to - <em>"{{ getQuestionTextByNodeId(unknown.id) }}"</em>
+                                    </small><br />
+                                    <em>{{unknown.text}}</em>
+                                </div>
+                                <div *ngIf="!unknownResponses.length">
+                                    <small class="text-muted">NO UNUSUAL RESPONSES</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

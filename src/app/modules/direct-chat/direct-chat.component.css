@@ -1,0 +1,26 @@
+.chat-container {
+    background: url('/assets/img/abstract-light.jpg');
+    background-size: cover;
+}
+
+.chat-window {
+    background-color: #fff;
+}
+
+.message-container {
+    height: 450px;
+    overflow-y: scroll;
+}
+
+.message-text {
+    white-space: pre-wrap;
+}
+
+.type-message {
+    position: relative;
+    bottom: 0;
+}
+
+.typing-indicator {
+    height: 25px;
+}

@@ -1,0 +1,36 @@
+<div class="row bg-light text-center text-muted pt-3 pb-2 m-0 border-bottom">
+  <div class="col-2">
+  </div>
+  <div class="col-2" [ngClass]="QuestionsValid ? 'text-dark' : 'text-muted'">
+    <a [ngClass]="QuestionsValid ? 'text-dark' : 'text-muted'" routerLink="." fragment="questions">
+      <i class="fa fa-question"></i><br/>
+      Questions<br/>
+      <i class="fa valid-green fa-check-circle-o" *ngIf="QuestionsValid"></i>
+      <i class="fa fa-circle-o" *ngIf="!QuestionsValid"></i>
+    </a>
+  </div>
+  <div class="col-2 " [ngClass]="TwitterValid ? 'text-dark' : 'text-muted'">
+    <a [ngClass]="TwitterValid ? 'text-dark' : 'text-muted'" routerLink="." fragment="socialmedia">
+      <i class="fa fa-twitter"></i><br/>
+      Social<br/>
+      <i class="fa valid-green fa-check-circle-o" *ngIf="TwitterValid"></i>
+      <i class="fa fa-circle-o" *ngIf="!TwitterValid"></i>
+    </a>
+  </div>
+  <div class="col-2 " [ngClass]="GovernanceValid ? 'text-dark' : 'text-muted'">
+    <a [ngClass]="GovernanceValid ? 'text-dark' : 'text-muted'" routerLink="." fragment="governance">
+      <i class="fa fa-institution"></i><br/>
+      Governance<br/>
+      <i class="fa valid-green fa-check-circle-o" *ngIf="GovernanceValid"></i>
+      <i class="fa fa-circle-o" *ngIf="!GovernanceValid"></i>
+    </a>
+  </div>
+  <div class="col-2 " [ngClass]="DialogValid ? 'text-dark' : 'text-muted'">
+    <a [ngClass]="DialogValid ? 'text-dark' : 'text-muted'" routerLink="." fragment="dialogsettings"><i class="fa fa-comments-o"></i><br/>
+      Dialog<br/>
+      <i class="fa valid-green fa-check-circle-o" *ngIf="DialogValid"></i>
+      <i class="fa fa-circle-o" *ngIf="!DialogValid"></i>
+    </a>
+  </div>
+  <div class="col-2"></div>
+</div>

@@ -1,0 +1,32 @@
+[
+    {
+        "question": "Who is running this campaign?",
+        "intent": "#who-is-doing-this",
+        "help": "e.g: This study is conducted by researchers at IBM Research Lab Dublin (Dr Joe Doe, Dr Jane Doe, et al) in conjunction with IBM Ireland's Innovation Exchange (Peter Poliwoda)"
+    },
+    {
+        "question": "What will I be giving consent for?",
+        "intent": "#what-is-consent-for",
+        "help": "e.g: To grant the research team access to your answers to the survey"
+    },
+    {
+        "question": "Who do I contact if I have an issue?",
+        "intent": "#who-do-I-contact",
+        "help": "e.g: In the event of a complaint or issue about this research or a question being asked, please contact Peter Poliwoda at peterpoliwoda@example.com"
+    },
+    {
+        "question": "What is the purpose of this campaign?",
+        "intent": "#what-is-the-purpose",
+        "help": "e.g: The purpose of this study is to understand the public perceptions of the sharing of personal identifiable data (PID) in the context of health, emergency, and security-related scenarios. PID is information from which one may be identified, either when viewed on its own, or in conjunction with other data. The information you provide will contribute to our understanding of the acceptability of data sharing in different contexts."
+    },
+    {
+        "question": "Will my answers be confidential?",
+        "intent": "#will-it-be-confidential",
+        "help": "e.g: Information that is collected about you during the course of this survey will be kept strictly confidential, and identifiable data (e.g., demographics, your name, your email address) will only be seen by researchers at IBM Innovation Exchange. All your data and records will be anonymised when used in the study. Once collected, your answers will form part of a larger database from which only group data will be analysed and reported for statistical analysis purposes. The data will be kept securely, and all identifiable information will be handled in accordance with relevant Data protection laws."
+    },
+    {
+        "question": "What data will you ask for?",
+        "intent": "#what-will-be-asked-of-me",
+        "help": "e.g: We will need to ask you some demographic questions (age and gender), but these will not be shared with anyone, and only used to group you into a larger cohort. After that we will only be asking your opinion on certain topics to help us understand how you, the public, feel about the issue."
+    }
+]

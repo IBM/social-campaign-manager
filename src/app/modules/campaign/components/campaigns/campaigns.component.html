@@ -1,0 +1,24 @@
+<spinner class="m-5" *ngIf="loading"></spinner>
+<div class="campaigns">
+    <div *ngIf="!loading" class="container-fluid">
+        <div *ngFor="let campaign of campaigns" class="row" (click)="moveToCampaign(campaign._id)">
+            <div class="col-4">
+                <h4 class="name">
+                    {{campaign.name}}
+                </h4>
+                <small class="text-muted">
+                    {{campaign.description}}
+                </small>
+            </div>
+            <div class="col-7 text-center pt-2">
+                <small class="font-heavy">
+                    <span [class]="campaign.status.toLowerCase()">{{campaign.status}}</span>
+                    <i class="fa fa-pencil" *ngIf="campaign.status === 'Draft'"></i>
+                </small>
+            </div>
+            <div class="arrow col-1 text-right">
+                <i class="fa fa-angle-right"></i>
+            </div>
+        </div>
+    </div>
+</div>

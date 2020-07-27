@@ -1,0 +1,44 @@
+<nav class="navbar navbar-dark navbar-expand-lg bg-custom-dark" *ngIf="isUserLoggedIn() && !hideNavbar">
+
+    <!-- Place menu button on left (only on small devices), and brand logo to the right -->
+    <div>
+        <button *ngIf="isUserLoggedIn()" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"><!--☰--></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            IBM <strong>Social Campaign Manager</strong>
+        </a>
+    </div>
+
+    <!-- If logged in, show tabs (dropdown on small devices) -->
+    <div class="tabs collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item" *ngIf="isUserLoggedIn()" >
+                <a class="nav-link" routerLink="/campaigns" routerLinkActive="active">
+                    Campaigns</a>
+            </li>
+            <li class="nav-item" *ngIf="isUserLoggedIn()" >
+                <a class="nav-link" routerLink="/campaign/new" routerLinkActive="active">
+                    New Campaign</a>
+            </li>
+        </ul>
+
+        <ul class="navbar-nav">
+            <li class="nav-item" *ngIf="isUserLoggedIn()">
+                <a class="nav-link useraction" (click)="userProfile()">
+                    <i class="fa fa-user navicons"></i>
+                    {{userGreeting}} {{userName}}
+                 </a>
+            </li>
+            <li class="nav-item" *ngIf="isUserLoggedIn()">
+                <a class="nav-link useraction" (click)="logout()">
+                    <i class="fa fa-sign-out navicons"></i>
+                    Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<flash-messages></flash-messages>
+<router-outlet></router-outlet>

@@ -1,0 +1,75 @@
+/* this file will be extracted to main dist folder and is imported in index.html */
+/* This file is for setting global styles  */
+@import 'variables';
+
+$theme-colors: (
+  "primary": #0004ff,
+  "success": #01ab8d,
+  "danger": #ff4136
+);
+
+$enable-gradients: true;
+
+body {
+    background-color: #ffffff !important;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+// .btn-primary {
+//     background-color: #0004ff !important;
+//     border-color: #0003bd !important;
+//     color: #FFFFFF !important;
+// }
+
+.btn-dark {
+    border-bottom: 5px solid black !important;
+}
+
+// .btn-primary:hover {
+//     background-color: #aa9898 !important;
+// }
+
+// .btn:active {
+//     background-color: #286090 !important;
+//     border-color: #204d74 !important;
+//     color: #FFFFFF !important;
+// }
+
+.btn-primary {
+    border-bottom: 5px solid #0004ff !important;
+}
+
+.btn-info {
+    border-bottom: 5px solid #207074 !important;
+}
+
+.btn-success {
+    border-bottom: 5px solid #204d74 !important;
+}
+
+.btn-secondary {
+    border-bottom: 5px solid #404f5d !important;
+}
+
+Register .card-header,
+login .card-header {
+    background-color: #ededed;
+    border-bottom: 1px solid #e3e3e3;
+    color: #1d1d1d;
+}
+
+.card-block {
+    box-shadow: 0px 3px 5px 1px #ededed;
+}
+
+.navbar-nav > li > a {}
+.navbar {
+    min-height:30px !important;
+    padding-top: 0px !important;
+    padding-bottom:0px !important;
+}
+
+.border-thick {
+    border-width: thick;
+}

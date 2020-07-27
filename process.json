@@ -1,0 +1,12 @@
+{
+    "apps": [{
+        "name": "social-campaign-manager",
+        "script": "app.js",
+        "watch": false,
+        "instances": 1,
+        "node_args": "--max_old_space_size=8192",
+        "env": {
+            "NODE_ENV": "prod"
+        }
+  }]
+}

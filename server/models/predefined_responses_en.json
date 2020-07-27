@@ -1,0 +1,13 @@
+{
+    "chatbot_introduction": "Hi I'm Midy!\n I'm currently looking for the public's opinion on: \n",
+    "tweet_reply": [
+        "Lets discuss this a little more in direct messages {CHAT_LINK}",
+        "I'd love to ask you some more questions about this in direct messages, if you have a minute {CHAT_LINK}",
+        "It would be great to get more of your opinions, can we talk privately in direct messages? {CHAT_LINK}",
+        "Can I ask you a few more questions in direct messages? {CHAT_LINK}",
+        "Lets chat more about this in direct messages {CHAT_LINK}"
+    ],
+    "direct_chat_welcome": "Hi! Welcome to the Social Campaign Manager. I am a survey bot powered by Watson and I have a few questions for you. To get started, click ‘Start’ below.",
+    "throttle_decline_message": "Dear user, apologies, we are currently experiencing high volumes of engagement. Please try to send this message again later.",
+    "slack_app_mention": "Hi there! I'm the IBM Social Campaign Manager chatbot assistant. Send me a direct message to answer questions in our latest survey! You can find me in the *Apps Section* of your Slack workspace, or click here to start: {APP_LINK}"
+}

@@ -1,0 +1,55 @@
+{
+    "extends": [
+        "tslint-eslint-rules"
+    ],
+    "rules": {
+        "no-console": [false, "log", "error", "warn"],
+        "semicolon": [true, "always"],
+        "eofline": true,
+        "new-parens": true,
+        "block-spacing": [true, "always"],
+        "comment-format": [true,
+             "check-uppercase",
+             "check-space"
+             ],
+        "space-in-parens": [true, "never"],
+        "no-trailing-whitespace": true,
+        "ter-computed-property-spacing": true,
+        "array-bracket-spacing": [true, "never"],
+        "no-consecutive-blank-lines": [true, 2],
+        "ter-no-mixed-spaces-and-tabs": true,
+        "ter-no-tabs": true,
+        "ter-indent": [true, 4],
+        "linebreak-style": [true, "LF"],
+        "quotemark": [
+            true,
+            "single"
+        ],
+        "object-curly-spacing": [true, "always", {"arraysInObjects": false, "objectsInObjects": false}],
+        "ter-max-len": [
+            true,
+            120,
+            4
+        ],
+        "brace-style": [
+            true,
+            "1tbs",
+            {
+                "allowSingleLine": true
+            }
+        ],
+        "whitespace": [true,
+            "check-branch",
+            "check-decl",
+            "check-operator",
+            "check-module",
+            "check-separator",
+            "check-rest-spread",
+            "check-type",
+            "check-typecast",
+            "check-type-operator",
+            "check-preblock",
+            "check-postbrace"
+        ]
+    }
+}

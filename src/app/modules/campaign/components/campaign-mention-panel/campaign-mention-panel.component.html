@@ -1,0 +1,32 @@
+<div class="pb-3 pt-4">
+    <small class="card-title pl-4">{{title}}</small>
+    <div class="mt-2 scrollable">
+        <div class="card-text px-2">
+            <div *ngFor="let cat of items">
+                <div class="row mb-3">
+                    <div class="col-8 org-name">
+                        {{cat.label}}
+                    </div>
+                    <div class="col-1 org-count">
+                        <div class="text-center count-box negative">
+                            {{cat.negative}}
+                        </div>
+                    </div>
+                    <div class="col-1 org-count">
+                        <div class="text-center count-box neutral">
+                            {{cat.neutral}}
+                        </div>
+                    </div>
+                    <div class="col-1 org-count">
+                        <div class="text-center count-box positive">
+                            {{cat.positive}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <small class="text-muted" *ngIf="items.length === 0">
+                NO {{title}} YET
+            </small>
+        </div>
+    </div>
+</div>

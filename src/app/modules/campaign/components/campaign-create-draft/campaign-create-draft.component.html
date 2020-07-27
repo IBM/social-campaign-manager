@@ -1,0 +1,37 @@
+<div class="container">
+  <div class="row pt-5">
+    <div class="col-3"></div>
+    <div class="col-6 pt-3 pb-3 border">
+      <form>
+        <h1 class="text-center">New campaign</h1>
+        <div class="form-group">
+          <label for="campaignName">Before we start let's give your campaign a name.</label>
+          <input type="text" class="form-control" id="campaignName" aria-describedby="campaignNameHelp"
+            placeholder="Campaign Name" (keyup.enter)="createDraftCampaign()" maxlength="64"
+            (keyup)="validate(campaignName.value, campaignDesc.value)" #campaignName>
+          <small id="campaignNameHelp" class="form-text text-muted">
+            Choose a name that's easily identifiable in your list.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="campaignDesc">Brief description (max 75 chars)</label>
+          <input type="text" class="form-control" id="campaignDesc" aria-describedby="campaignDescHelp" maxlength="75"
+            placeholder="Description" (keyup.enter)="createDraftCampaign()"
+            (keyup)="validate(campaignName.value, campaignDesc.value)"
+            #campaignDesc>
+          <small id="campaignDescHelp" class="form-text text-muted">
+            One aspect of the campaign will be to see how many people have never heard of the policy. We may get people
+            asking questions such as "What is the policy?", "What does it mean" etc. This should be a short concise
+            answer to that question.
+          </small>
+        </div>
+        <div class="text-center">
+          <button type="button" [disabled]="campaignName.value.length < 5 || campaignDesc.value.length < 5"
+            (click)="createDraftCampaign()"
+            class="btn btn-primary">Create!</button>
+        </div>
+      </form>
+    </div>
+    <div class="col-3"></div>
+  </div>
+</div>

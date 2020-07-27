@@ -1,0 +1,437 @@
+<ng-template #modalContent let-close="close" let-dismiss="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">This can't be undone. Are you sure?</h4>
+    <button type="button" class="close" aria-label="Dismiss" (click)="dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    This will cause all the data gathered in <code>{{campaign.name}}</code> to be lost. Please confirm the name of the
+    campaign before you delete any data:
+    <input type="text" [(ngModel)]="confirmDelete">
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-danger" [disabled]="confirmDelete != campaign.name"
+      (click)="close('Delete click')">Delete forever</button>
+    <button type="button" class="btn btn-outline-dark" (click)="dismiss('Keep click')">
+      {{confirmationModalDismissBtn}}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #nextExplanation>
+  <ul>
+    <li>The Next Question determines what question is posed to the campaign responder after this Question</li>
+    <li>The End Campaign option will end the conversation once the campaign responder answers this Question</li>
+    <li><b>The Ordering of Questions is important!</b> It will avoid collisions & loops and ensure that the conversation
+      is easy to follow</li>
+  </ul>
+</ng-template>
+
+<ng-template #exampleExplanation>
+  Examples allows you to specify additional responses that could be entered by the responder that
+  mean the same thing as the related option. The examples field is optional. Separate multiple examples with commas
+  <code>,</code>.
+  <ul>
+    <li><b>Option Synonyms</b> e.g. Option: Yes, Examples: Yeah, sure, yep</li>
+    <li><b>Typing Errors</b> e.g. Option: Maybe, Examples: Mabe, Mayb, may</li>
+  </ul>
+</ng-template>
+
+<campaign-checklist-header [(campaign)]="campaign" *ngIf="!loading">
+</campaign-checklist-header>
+<div class="container" *ngIf="loading">
+  <div class="row">
+    <div class="col text-center">
+      <spinner class="m-5 text-muted" *ngIf="loading"></spinner>
+    </div>
+  </div>
+</div>
+<div class="container px-4" *ngIf="!loading">
+  <div class="row mt-4 border-bottom border-light">
+    <div class="col-5 pl-0 pt-3">
+      <a routerLink="/campaign/{{campaignId}}" class="text-secondary">
+        <i class="fa fa-arrow-left"></i> Back
+      </a>
+    </div>
+    <div class=" col-7 pt-2 pr-2 pb-3 text-right">
+      <button type="button" (disabled)="campaignName.value = ''" (click)="saveCampaignForm()"
+        routerLink="." fragment="" class="btn btn-info" title="You can save the campaign at any time for your own records. Only publishing makes the campaign available publicly.">
+        <i class="fa fa-check"></i> Save <span *ngIf="(campaign.status === 'Draft')">draft</span></button>
+      <button type="button" *ngIf="!campaign.published.length" (disabled)="campaignName.value = ''" (click)="publish()"
+        routerLink="." fragment="" class="btn btn-dark" title="You can save the campaign at any time for your own records. Only publishing makes the campaign available publicly.">
+        <i class="fa fa-send-o"></i> Publish!</button>
+
+      <div class="btn-group" *ngIf="campaign.published.length">
+        <button type="button" (disabled)="campaignName.value = ''" (click)="publish()"
+          routerLink="." fragment="" class="btn btn-dark"
+          title="You can save the campaign at any time for your own records.
+            Only publishing makes the campaign available publicly.">
+        <i class="fa fa-send-o"></i> Publish!</button>
+        <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split"
+          data-toggle="dropdown"   aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" routerLink="." fragment="" (click)="stopCampaign()">Stop campaign</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" routerLink="." fragment="" routerLink="/chat/{{campaignId}}">Try out!</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col pl-0">
+      <div class="form-group">
+        <h1 *ngIf="(campaign.watson_workspace_id.length)" class="text-dark pt-1">{{campaign.name}}</h1>
+        <input type="text" class="form-control campaign-title pl-0" id="campaignName" name="campaignName"
+          (keyup)="updatePickerIntentFields()" *ngIf="!(campaign.watson_workspace_id.length)"
+          [(ngModel)]="campaign.name" aria-describedby="campaignNameHelp" placeholder="Campaign Name">
+        <small id="campaignNameHelp" class="form-text text-muted">
+          <span>
+            Once the campaign is published you won't be able to change its name.
+          </span>
+          <span *ngIf="(campaign.status !== 'Running')" class="border p-1 m-1 text-info">
+            {{ campaign.status }}
+          </span>
+          <span *ngIf="(campaign.published.length)" class="border border-success p-1 m-1 text-success">
+            Published <i *ngIf="(campaign.published !== campaign.updated)"
+              title="This campaign has some unpublished saved changes." class="fa fa-circle"></i>
+          </span>
+          <span class="border p-1 m-1 text-muted">
+            ver. {{ campaign._rev | revisionTrim }}
+          </span>
+        </small>
+      </div>
+    </div>
+  </div>
+  <h2 class="mt-3 ml-0" id="questions">Questions</h2>
+  <div class="row">
+    <div class="col pb-3">
+      <div *ngFor="let question of campaign.questions; let i=index;" class="card card-block my-3 question-card">
+        <div class="text-right">
+          <button *ngIf="question.new || !question.edit" id="removeQuestion_{{i}}" class="btn btn-sm btn-danger"
+            (click)="removeQuestion($event)">
+            <i class="fa fa-trash"></i>
+          </button>
+        </div>
+        <div *ngIf="!question.edit" class="p-4">
+          <h4 id="question_{{i}}" class="clickable" (click)="updateQuestion($event)">{{question.text}}</h4>
+          <p class="text-muted">Answer type: {{questionType[question.type]}}</p>
+        </div>
+        <!-- Editing -->
+        <div *ngIf="question.edit" class="form-group pl-4 pt-4 pr-4">
+          <textarea id="editQuestionText_{{i}}" class="form-control question-input" rows="1"
+            [(ngModel)]="question.text" placeholder="Q:" (focus)="restoreField($event)">
+          </textarea>
+        </div>
+        <div *ngIf="question.edit" class="form-group p-2">
+          <div class="col-sm-12">
+            <div class="col-sm-9 d-inline-block">
+              <label for="editQuestionType_{{i}}">Answer Type:</label>
+              <select id="editQuestionType_{{i}}" name="type" class="form-control" [(ngModel)]="question.type"
+                (change)="updateQuestionType($event)" (focus)="restoreField($event)">
+                <option value="" disabled>Please select a type</option>
+                <option *ngFor="let qTypeKey of getQuestionTypeKeys();" value="{{qTypeKey}}">{{questionType[qTypeKey]}}
+                </option>
+              </select>
+            </div>
+            <!-- Edit Free form -->
+            <div *ngIf="question.type === 'free_form' || question.type === 'multiple_choice'" class="d-inline-block">
+              <label for="editQFFNext_{{i}}" placement="top" [ngbPopover]="nextExplanation"
+                triggers="mouseenter:mouseleave" popoverTitle="Next Question">
+                Next Question:&nbsp;<i class="fa fa-question-circle"></i>
+              </label>
+              <select id="editQFFNext_{{i}}" name="next" class="form-control" [(ngModel)]="question.next">
+                <optgroup class="select-input-sm">
+                  <option value="" disabled>Please select a Question</option>
+                  <option *ngFor="let innerQuestion of getAvailableQuestions(i);" value="{{innerQuestion.id}}">
+                    {{innerQuestion.text | slice : 0 : 21}}...</option>
+                  <option value="end-campaign-thank-you">End Campaign</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="question.edit" class="form-group pl-2 pr-2">
+          <!-- Edit Yes / No / Maybe -->
+          <div *ngIf="question.type === 'yes_no_maybe'" class="d-inline-block">
+            <div *ngFor="let answer of question.possible_answers; let j=index;" class="pl-4 pb-2">
+              <div class="d-inline-block">
+                <label *ngIf="j === 0" for="editQYNM_{{i}}_{{j}}" class="label-sm">Option:</label>
+                <input type="text" id="editQYNM_{{i}}_{{j}}" class="form-control question-input-sm"
+                  value="{{answer.answer}}" placeholder="Option:" disabled>
+              </div>
+              <div class="d-inline-block pl-4">
+                <label *ngIf="j === 0" for="editQYNMNext_{{i}}_{{j}}" class="label-sm" placement="top"
+                  [ngbPopover]="nextExplanation" triggers="mouseenter:mouseleave" popoverTitle="Next Question">
+                  Next Question:&nbsp;<i class="fa fa-question-circle"></i>
+                </label>
+                <select id="editQYNMNext_{{i}}_{{j}}" name="next" class="form-control" [(ngModel)]="answer.next">
+                  <optgroup class="select-input-sm">
+                    <option value="" disabled>Please select a Question</option>
+                    <option *ngFor="let innerQuestion of getAvailableQuestions(i);" value="{{innerQuestion.id}}">
+                      {{innerQuestion.text}}</option>
+                    <option value="end-campaign-thank-you">End Campaign</option>
+                  </optgroup>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- Edit Multiple Choice -->
+          <div *ngIf="question.type === 'multiple_choice'" class="d-inline-block">
+            <table *ngIf="question.possible_answers.length">
+              <thead>
+                <tr>
+                  <td class="label-sm pl-5">
+                    Option:
+                  </td>
+                  <td *ngIf="!question.showExamples" class="pl-2">
+                    <button id="showQExamples_{{i}}_{{j}}" class="btn btn-sm btn-light"
+                      (click)="toggleExamples($event, true)" placement="top" [ngbPopover]="exampleExplanation"
+                      triggers="mouseenter:mouseleave" popoverTitle="Examples">
+                      <i class="fa fa-caret-right"></i> Examples
+                    </button>
+                  </td>
+                  <td *ngIf="question.showExamples" class="label-sm pl-2">
+                    <button id="hideQExamples_{{i}}_{{j}}" class="btn btn-sm btn-light"
+                      (click)="toggleExamples($event, false)" placement="top" [ngbPopover]="exampleExplanation"
+                      triggers="mouseenter:mouseleave" popoverTitle="Examples">
+                      <i class="fa fa-caret-down"></i> Examples
+                    </button>
+                  </td>
+                  <td class="pl-4"></td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let answer of question.possible_answers; let j=index;">
+                  <td class="pl-5 pt-2">
+                    <input type="text" id="editQMulti_{{i}}_{{j}}" class="form-control question-input-sm"
+                      [(ngModel)]="answer.answer" placeholder="Option:" (focus)="restoreField($event)">
+                  </td>
+                  <td *ngIf="!question.showExamples" class="pl-2 pt-2">
+                    <input type="text" id="editQExamples_{{i}}_{{j}}" class="form-control question-input-sm hidden"
+                      [(ngModel)]="answer.exampleString" placeholder="Examples:" (focus)="restoreField($event)">
+                  </td>
+                  <td *ngIf="question.showExamples" class="pl-2 pt-2">
+                    <input type="text" id="editQExamples_{{i}}_{{j}}" class="form-control question-input-sm"
+                      [(ngModel)]="answer.exampleString" placeholder="Examples:" (focus)="restoreField($event)">
+                  </td>
+                  <td class="pl-4 pt-2">
+                    <button id="removeOption_{{i}}_{{j}}" class="btn btn-sm btn-danger" (click)="removeOption($event)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="d-block text-center pt-2 pl-4">
+              <button id="addAnswerForQuestion_{{i}}" class="btn btn-sm btn-light" (click)="addMultipleChoice($event)">
+                <i class="fa fa-plus-circle"></i> New Choice
+              </button>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="question.edit" class="text-center mt-4 mb-2 pb-3">
+          <button id="saveQuestion_{{i}}" class="btn btn-info" (click)="saveQuestion($event)" [disabled]="false">
+            <i class="fa fa-check"></i> Save Question
+          </button>
+          <span class="pl-2">
+            <button *ngIf="!question.new" id="cancel_{{i}}" class="btn btn-secondary" (click)="discardChanges($event)">
+              <i class="fa fa-times"></i> Cancel
+            </button>
+          </span>
+        </div>
+      </div>
+      <!-- Add New Question Button -->
+      <div class="card mb-3">
+        <div class="card-body text-center">
+          <button type="button" id="add-question" class="btn btn-light btn-sm"
+            routerLink="." fragment="" (click)="addQuestion()">
+            <i class="fa fa-plus-circle"></i> NEW QUESTION
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h2 class="mt-4 ml-0 text-info" id="socialmedia"><i class="fa fa-twitter"></i> Social Media</h2>
+  <div class="row mt-2 border border-info">
+    <div class="col pt-3 pb-3" *ngIf="twitterLoading">
+      <spinner class="mt-2 text-muted" *ngIf="twitterLoading"></spinner>
+    </div>
+    <div class="col pt-3 pb-3" *ngIf="!twitterLoading">
+      <div class="form-group">
+        <label for="campaignHashtag">Campaign Hashtag:</label>
+        <div class="input-group">
+          <div class="input-group-append">
+            <span class="input-group-text">#</span>
+          </div>
+          <input type="text" class="form-control" id="campaignHashtag" name="campaignHashtag"
+            [(ngModel)]="campaign.twitter_hashtag" #campaignHashtag (keyup)="validateHashtag()"
+            [disabled]="(campaign.twitter_initial_tweet_id.length)" aria-describedby="campaignHashtagHelp"
+            placeholder="" value="">
+          <small id="campaignHashtagHelp" class="form-text text-muted">
+            This will be used to group together all of the feedback on the social media platforms. It needs to be
+            unique, ideally it should be something that is extremely unlikely to have ever been used before.
+          </small>
+        </div>
+
+        <label for="initialTweet" class="mt-2">Initial Tweet
+          ({{278 - campaignHashtag.value.length - initialTweet.value.length}} chars
+          remaining):</label>
+        <div class="input-group">
+          <textarea class="form-control" aria-describedby="initialTweetHelp"
+            maxlength="{{278 - campaignHashtag.value.length}}" #initialTweet
+            [disabled]="(campaign.twitter_initial_tweet_id.length)" id="initialTweet" name="initialTweet"
+            [(ngModel)]="campaign.twitter_initial_tweet" rows="3"></textarea>
+          <div class="input-group-append">
+            <span class="input-group-text">#{{campaignHashtag.value}}</span>
+          </div>
+        </div>
+        <small id="initialTweetHelp" class="form-text text-muted">
+          This will be posted as a tweet on Twitter to request answers or feedback from the general public. Once they
+          respond to the tweet, a conversation will begin to attempt to understand why they feel that way.
+        </small>
+
+        <div *ngIf="!(campaign.twitter_initial_tweet_id)" class="text-right">
+          <button type="button" [disabled]="!(campaign.published.length)
+            || !(campaign.twitter_initial_tweet.length) || !(campaign.twitter_hashtag.length)"
+            title="Campaign needs to be published in order to post tweet"
+            (click)="postInitialTweet()" class="btn btn-info">
+            <i class="fa fa-twitter-square"></i> Post tweet</button>
+        </div>
+        <div *ngIf="(campaign.twitter_initial_tweet_link)" class="text-right">
+          <small class="text-muted">
+            <a href="{{campaign.twitter_initial_tweet_link}}">
+              {{campaign.twitter_initial_tweet_link}}
+            </a>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4 ml-0 text-dark" id="dialogsettings">
+    <i class="fa fa-comments-o"></i> Dialog Settings</h2>
+  <div class="row mt-2 border border">
+    <div class="col pt-3 pb-3">
+      <div class="form-group row pl-3">
+        <label for="shortCampaignDesc">Campaign Description:</label>
+        <input type="text" class="form-control" id="shortCampaignDesc" name="shortCampaignDesc"
+          [(ngModel)]="campaign.description" maxlength="75" aria-describedby="campaignNameHelp"
+          placeholder="Short description of the campaign">
+        <label for="campaignIntroduction" class="mt-4">Campaign Chat Introduction:</label>
+        <textarea class="form-control" aria-describedby="campaignIntroductionHelp" id="campaignIntroduction"
+          name="campaignIntroduction" [(ngModel)]="campaign.chat_introduction" rows="3"
+          #campaignIntroduction></textarea>
+        <small id="campaignIntroductionHelp" class="form-text text-muted">
+          The introduction will be displayed to users after they share their demographic information, and before the
+          first question is asked. This field is used to explain to the user what the purpose of this questionnaire is,
+          what its goals are or explaining why these questions are being asked of them.
+        </small>
+      </div>
+      <div class="form-group row pl-3">
+        <div class="col-lg-2 col-xs-1 pl-0">
+          <label for="campaignLang">Language:</label>
+          <select class="form-control" id="campaignLang" name="campaignLang" [(ngModel)]="campaign.language"
+            aria-describedby="campaignLangHelp" disabled>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4 ml-0" id="governance">
+    <i class="fa fa-institution"></i> Governance Questions</h2>
+  <small id="requiredGovernanceHelp" class="form-text text-muted">
+    During the course of the campaign, users might ask certain questions about the campaign such as: <br />
+    Who is running this campaign? Where can I find more information, etc. In order to pre-empt these questions the below
+    questions will need to be answered.
+  </small>
+  <div class="row mt-2 border border-dark">
+    <div class="col pb-3 pt-2">
+      <div class="form-group">
+        <label for="consentMessageForm" class="mt-2">Privacy policy and consent</label>
+        <textarea class="form-control" [(ngModel)]="campaign.consent_message" id="consentMessageForm"
+          aria-describedby="consentMessageFormHelp" rows="5"></textarea>
+        <small id="consentMessageFormHelp" class="form-text text-muted">
+          When the campaign begins, the first message the user is greeted with is the campaign consent form. The form is
+          designed to introduce the privacy policy and have the user agree to their details being used for the purposes
+          of the study. The message will be followed with two quick buttons in the chat messaging "I consent" and "I do
+          not consent".
+        </small>
+      </div>
+      <div class="form-group" *ngFor="let reqQtn of campaign.required_questions; let i=index">
+        <label for="{{'requiredQuestion' + i}}" class="mt-2">{{reqQtn.question}}</label>
+        <textarea class="form-control" [(ngModel)]="campaign.required_questions[i].response"
+          id="{{'requiredQuestion' + i}}" rows="3"></textarea>
+        <small id="requiredQuestion{{i}}Help" class="form-text text-muted">
+          {{requiredQuestionsHelpText[reqQtn.intent]}}
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="mt-4 ml-0 text-dark">Danger zone</h2>
+  <div class="row mt-2 pt-3 border border-danger">
+    <div class="col">
+      <div class="row">
+        <div class="col px-4">
+          <h4 class="mt-2">Workspace Picker</h4>
+          <div class="form-group mt-1">
+            <label for="workspacePickerIntent">Picker Intent:</label>
+            <input type="text" class="form-control" id="workspacePickerIntent" name="workspacePickerIntent"
+              [(ngModel)]="campaign.picker_intent" aria-describedby="workspacePickerIntentHelp" placeholder=""
+              #workspacePickerIntent disabled>
+            <small id="workspacePickerIntentHelp" class="form-text text-muted">
+              Intent used to pick this campaign from the list of currently active campaigns. You don't need to change
+              this.
+            </small>
+            <label class="mt-3" for="workspacePickerExamples">Picker examples:</label>
+            <input type="text" class="form-control" id="workspacePickerExamples" name="workspacePickerExamples"
+              aria-describedby="campaignNameHelp" placeholder="Workspace picker examples" #workspacePickerExamples
+              [(ngModel)]="campaign.picker_intent_examples">
+            <small id="campaignIntroductionHelp" class="form-text text-muted">
+              <code>Warning:</code> List of examples to select the campaign from the list. Don't change if you don't
+              have to.
+            </small>
+          </div>
+        </div>
+      </div>
+      <div class="row border-top p-3">
+        <div class="col-lg-9 col-sm-12">
+          <h4>Clear campaign response data</h4>
+          <p>This will permanently delete every response, nlu analysis and demographic information of every participant who answered this campaign. This <u>will not remove the campaign</u>.
+          </p>
+        </div>
+        <div class="col-lg-3 col-sm-12 py-3 text-right">
+          <button type="button" (click)="clearCampaignAnswers(modalContent)" class="btn btn-danger">
+            <i class="fa fa-comments-o"></i> Delete all responses</button>
+        </div>
+      </div>
+      <div class="row border-top p-3">
+        <div class="col-lg-9 col-sm-12">
+          <h4>Delete this campaign</h4>
+          <p>Once you delete a campaign, there is no going back. Please be certain.</p>
+        </div>
+        <div class="col-lg-3 col-sm-12 py-3 text-right">
+          <button type="button" (click)="deleteCampaign(modalContent)" class="btn btn-danger">
+            <i class="fa fa-trash"></i> Delete this campaign</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-5 mb-3 border">
+    <div class="col-6 py-4 text-muted">
+      <small>
+        Last updated on: {{campaign.updated | date:'fullDate'}} at {{campaign.updated | date:'shortTime'}}
+      </small>
+    </div>
+    <div *ngIf="campaign.published" class="col-6 py-4 text-muted text-right">
+      <small>
+        Published on: {{campaign.published | date:'fullDate'}} at {{campaign.published | date:'shortTime'}}
+      </small>
+    </div>
+  </div>
+</div>
