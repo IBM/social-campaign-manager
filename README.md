@@ -34,7 +34,7 @@ You can set one up for free here: https://cloud.ibm.com/
 
 Clone the repository to your local machine.
 ```
-$ git clone git@github.ibm.com:cloud-ai-foundry/Social-Campaign-Manager.git
+$ git clone git@github.com:IBM/social-campaign-manager.git
 ```
 
 Inside of the cloned git directory on your local machine refer to two files:
