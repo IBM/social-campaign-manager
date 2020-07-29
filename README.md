@@ -289,6 +289,11 @@ $ npm start
 ### Operating system disclaimer
 The Social Campaign Manager application has been developed and tested on MacOS Catalina and deployed as an Cloud Foundry app instance on IBM Cloud. The app has not been tested on the Microsoft Windows operating system. Some scripts updates might be necessary to enable running of the app on Windows.
 
+## Acknowledgements
+
+This project received funding as part of the MiDAS project under the EC Horizon 2020 SC1-PMF-18 Big Data Supporting Public Health Policies.
+
+Grant Agreement No. 727721
 
 ## License & Authors
 
