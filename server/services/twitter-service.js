@@ -42,7 +42,7 @@ class TwitterService {
                 throw new Error('Error setting up Twitter service.');
             }
         } else {
-            logger.error('ERROR: Missing Twitter ENV variables. Twitter functionality will not work.');
+            logger.warn('Missing Twitter ENV variables. Twitter functionality will not work.');
         }
     }
 
