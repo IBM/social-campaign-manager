@@ -1,17 +1,30 @@
 const { WebClient } = require('@slack/web-api');
-const slackBotToken = process.env.SLACK_BOT_TOKEN;
-const slackWebClient = new WebClient(slackBotToken);
+
+const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
+let slackWebClient;
+if (SLACK_BOT_TOKEN) {
+    slackWebClient = new WebClient(SLACK_BOT_TOKEN);
+}
 
 const logger = require('../../utils/logger')('SlackStrategy');
 
 module.exports = {
     initialize: async () => {
-        const slackInitialData = await slackWebClient.auth.test();
-        const { user_id, team_id, bot_id } = slackInitialData;
-        const slackBotsInfo = await slackWebClient.bots.info({ bot: bot_id });
-        const app_id = slackBotsInfo['bot'].app_id;
-        logger.info('SLACK_BOT_USER_ID initialized:', { user_id, team_id, app_id });
-        return { user_id, team_id, app_id };
+        if (SLACK_BOT_TOKEN) {
+            const slackInitialData = await slackWebClient.auth.test();
+            const { user_id, team_id, bot_id } = slackInitialData;
+            const slackBotsInfo = await slackWebClient.bots.info({ bot: bot_id });
+            const app_id = slackBotsInfo['bot'].app_id;
+            logger.info('SLACK_BOT_USER_ID initialized:', { user_id, team_id, app_id });
+            return { user_id, team_id, app_id };
+        } else {
+            return {
+                user_id: '',
+                team_id: '',
+                app_id: ''
+            };
+        }
+
     },
     sendTypingIndicator: () => {
         logger.debug('Sending typing indicator to Slack Channel [unsupported]');
