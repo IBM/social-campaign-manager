@@ -19,7 +19,9 @@ class RedisProvider extends DataProvider {
             this.uri = vcapJson['compose-for-redis'][0].credentials.uri;
             this.ca_certificate_base64 = vcapJson['compose-for-redis'][0].credentials.ca_certificate_base64;
         } else if (vcapJson['databases-for-redis'] && vcapJson['databases-for-redis'].length) {
-            this.uri = vcapJson['databases-for-redis'][0].credentials.connection.rediss.composed[0];
+            const dbsForRedisObj = vcapJson['databases-for-redis'][0].credentials.connection.rediss;
+            this.uri = dbsForRedisObj.composed[0];
+            this.ca_certificate_base64 = dbsForRedisObj.certificate.certificate_base64;
         } else {
             logger.error(
                 'ERROR: Your REDIS config uses a different REDIS provider URI. ' +
