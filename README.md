@@ -59,12 +59,18 @@ You can open the new `.env` file and `manifest.yml` files to place tokens inside
 
 Depending on the database used there may be existing volume or data level encryption applied out of the box. Additionally an example encryption technique has been implemented that could be used for application level encryption.  The data is encrypted using encryption keys which need to be recreated before the application's first run. The type of encryption implemented will depend on your requirements.
 
-`Temporary solution:` The encryption crypto module needs at least Node version v10+ to run. Use NVM to temporarily upgrade the Node.js version to v10 and then return to 8.11.x in further steps.
+Generate the encryption keys used by the application using the `openssl` command.
 
- ```
- $ node scripts/generate-encryption-keys.js
+MacOS comes with OpenSSL included within the OS. If you're using Windows please check out: https://www.openssl.org/
 
- ```
+To generate the private and public .pem keys go to the `/server/keys/` directory within your project in your Terminal app and run:
+
+```
+ $ openssl genrsa -out private.pem 4096
+ $ openssl rsa -in private.pem -outform PEM -pubout -out public.pem
+```
+
+Make sure the keys have been generated and placed in the correct directory before moving on.
 
 # IBM Cloud pre-requisites:
 
