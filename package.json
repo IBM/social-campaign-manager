@@ -111,7 +111,7 @@
         "morgan": "1.9.1",
         "ng-router-loader": "2.1.0",
         "ngc-webpack": "3.2.2",
-        "node-fetch": "2.1.1",
+        "node-fetch": "2.6.1",
         "node-sass": "4.13.1",
         "oauth": "0.9.15",
         "passport": "0.4.1",
