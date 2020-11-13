@@ -2,14 +2,6 @@
 
 IBM Ireland **Cloud & AI Foundry**
 
-**Contact**:
-Gavin Shorten
-<shorteng@ie.ibm.com>
-Ryan Gallagher
-<ryangall@ie.ibm.com>
-Peter Poliwoda
-<peterpoliwoda@ie.ibm.com>
-
 **Table of Contents**
 
 [Introduction](#introduction)
@@ -23,8 +15,6 @@ Peter Poliwoda
 [APIs](./apis.md)
 
 [Usage demo](./usage-demo.md)
-
-You can also read this document in a docx format [here](./scm_overview_guide.docx).
 
 Introduction
 ============
@@ -84,16 +74,18 @@ direct messages can be automated using Twitter's API.
 Figure 2.1 The Social Campaign Manager uses
 Twitter to consult public opinion
 
-Alternatively, the SCM can be connected to an alternative direct
-messaging service e.g. Slack, SameTime, Facebook etc. To demonstrate how
-this could look and to also provide the logic that connects front with
-backend in the SCM a demonstrator generic chat window has been
-implemented. The window provides the functionality to implement a direct
-messaging service to ask and answer questions. This capability has been
-provided as a demonstrator without consideration of security,
-authentication or encryption that might typically accompany a direct
-messaging service. The reason for this is that the design and
-implementation of these features is heavily dependent on the system to
-which it is integrating and being deployed within and owner/user
-requirements. The application owner should consider and implement these
-requirements carefully for their use case of the SCM.
+Other campaign data sources
+===========================
+
+Alternatively, the SCM can be connected to an alternative direct messaging service e.g. Slack, SameTime, Facebook etc. To demonstrate how this could look and to also provide the logic that connects front with backend in the SCM a demonstrator generic chat window has been implemented. The window provides the functionality to implement a direct messaging service to ask and answer questions. This capability has been provided as a demonstrator without consideration of security, authentication or encryption that might typically accompany a direct messaging service. The reason for this is that the design and implementation of these features is heavily dependent on the system to which it is integrating and being deployed within and owner/user requirements. The application owner should consider and implement these requirements carefully for their use case of the SCM.
+
+![Direct chat window](./media/direct-chat-window-intro.png)
+
+Figure 2.2 Direct chat window
+
+![Slack integration](./media/scm-slack.png)
+
+Figure 2.3 Slack messaging implementation example
+
+The SCM includes a number of examples of messaging platforms' implementations using a standardised provider mechanisms which can be used simultaneously. Input from all sources is integrated on the campaign dashboard where responses from multiple sources can be seen together.
+
