@@ -18,7 +18,7 @@ import {
     UnknownResponse
 } from '../../models/data-model';
 
-require('font-awesome-webpack');
+require('font-awesome-webpack-4');
 
 @Component({
     selector: 'campaign',

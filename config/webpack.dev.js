@@ -15,7 +15,6 @@ const commonConfig = require('./webpack.common.js');
  */
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 
 /**
  * Webpack Constants
@@ -35,7 +34,6 @@ const METADATA = {
     AOT: AOT
 };
 
-const MAPBOX_API_TOKEN = process.env.MAPBOX_API_TOKEN;
 const CAMPAIGN_FORM_ENABLED = process.env.CAMPAIGN_FORM_ENABLED;
 
 /**
@@ -46,13 +44,15 @@ const CAMPAIGN_FORM_ENABLED = process.env.CAMPAIGN_FORM_ENABLED;
 module.exports = function() {
     return webpackMerge(commonConfig({ env: ENV }), {
 
+        mode: 'development',
+
         /**
          * Developer tool to enhance debugging
          *
          * See: http://webpack.github.io/docs/configuration.html#devtool
          * See: https://github.com/webpack/docs/wiki/build-performance#sourcemaps
          */
-        devtool: 'cheap-module-source-map',
+        devtool: 'inline-source-map',
 
         /**
          * Options affecting the output of the compilation.
@@ -142,7 +142,6 @@ module.exports = function() {
                     ENV: JSON.stringify(METADATA.ENV),
                     NODE_ENV: JSON.stringify(METADATA.ENV),
                     HMR: METADATA.HMR,
-                    MAPBOX_API_TOKEN: JSON.stringify(MAPBOX_API_TOKEN),
                     CAMPAIGN_FORM_ENABLED: JSON.stringify(CAMPAIGN_FORM_ENABLED),
                     MOCK: 'false',
                     MOCK_EXCEPTIONS: JSON.stringify([
@@ -169,9 +168,7 @@ module.exports = function() {
             new LoaderOptionsPlugin({
                 debug: true,
                 options: {}
-            }),
-
-            new HotModuleReplacementPlugin()
+            })
         ],
 
         /**
