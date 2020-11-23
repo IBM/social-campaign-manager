@@ -6,19 +6,16 @@
 
 
 const cryptoService = require('../services/crypto-service');
-const USE_ENCRYPTION = (process.env.USE_ENCRYPTION !== 'false');
 
 class Response {
-    constructor(msgObj) {
+    constructor(twitterDmObj) {
 
         let dmResponse = {
             campaignId: '',
             socialMediaObjectType: 'direct-message',
-            socialMediaUserId: msgObj.sender.senderId
-                ? (USE_ENCRYPTION ? cryptoService.encrypt(msgObj.sender.senderId) : msgObj.sender.senderId)
-                : '',
-            rawMessage: msgObj.text,
-            location: msgObj.sender.location,
+            socialMediaUserId: twitterDmObj.sender.senderId ? cryptoService.encrypt(twitterDmObj.sender.senderId) : '',
+            rawMessage: twitterDmObj.text,
+            location: twitterDmObj.sender.location,
             timestamp: new Date().toISOString(),
             dialogNode: '',
             nlu: null,
@@ -26,7 +23,6 @@ class Response {
             isUnknownResponse: false,
             recognisedPredefinedAnswer: []
         };
-
         return dmResponse;
     }
 }

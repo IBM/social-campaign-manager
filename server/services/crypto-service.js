@@ -7,22 +7,9 @@ Warning only generate the keys one time on the server. Or maintain the OLD keys
 **********************************************************************************/
 const { generateKeyPairSync, publicEncrypt, privateDecrypt } = require('crypto');
 const fs  = require('fs');
-const path = require('path');
+const publicKeyFile = fs.readFileSync(__dirname + '/../keys/public.pem', 'utf8');
+const privateKeyFile = fs.readFileSync(__dirname + '/../keys/private.pem', 'utf8');
 const logger = require('../utils/logger')('crypto-service');
-
-let publicKeyFile, privateKeyFile;
-
-const USE_ENCRYPTION = (process.env.USE_ENCRYPTION !== 'false');
-if (USE_ENCRYPTION) {
-    try {
-        publicKeyFile = fs.readFileSync(path.normalize(__dirname + '/../keys/public.pem'), 'utf8');
-        privateKeyFile = fs.readFileSync(path.normalize(__dirname + '/../keys/private.pem'), 'utf8');
-    } catch (err) {
-        logger.error('Error reading encryption key files. Did you forget to generate them?\n'
-        + 'You can disable this feature by setting USE_ENCRYPTION=false\n', err);
-    }
-}
-
 
 /** *********************************************************************
  * This function will take in a string and return an encrypted variable
@@ -63,6 +50,7 @@ function generateKeyPairs() {
         privateKeyEncoding: {
             type: 'pkcs8',
             format: 'pem',
+
         }
     });
 
@@ -70,7 +58,7 @@ function generateKeyPairs() {
      * This function will write the public key to the file system
      */
 
-    fs.writeFile(path.normalize(__dirname + '/../keys/public.pem'), publicKey, function(err) {
+    fs.writeFile('../keys/public.pem', publicKey, function(err) {
         if (err) return logger.error('Error creating public key: ' + err);
         else {
             logger.debug('public key created');
@@ -80,7 +68,7 @@ function generateKeyPairs() {
     /** **********************************************************************
      * This function will write the private key to the file system
      */
-    fs.writeFile(path.normalize(__dirname + '/../keys/private.pem'), privateKey, function(err) {
+    fs.writeFile('../keys/private.pem', privateKey, function(err) {
         if (err) return logger.error('Error creating private key: ' + err);
         else {
             logger.debug('private key created');

@@ -95,8 +95,6 @@ setup of the SCM.
 
 Publishing saves the campaign to Watson, building the conversation dialog. It is used to update the campaign if edits are made. Publishing the campaign and posting a tweet are two separate and distinct actions. There is no need to post a Tweet as we will see in the section below.
 
-## Engaging with the public
-
 ### Engaging with the public through generic chat window
 
 Once the campaign is published, the participant is able to engage with the campaign by going to the generic chat window page. The page can be accessed through a url (YOUR-APP.mybluemix.net/#/chat/campaign-id-here), or through the Chat button on the campaign results page (displayed by the EDIT button, as shown in picture below).
@@ -107,20 +105,6 @@ Engaging with the campaign through chat requires the participant to begin the co
 
 ![Chat window](./media/image43.png)
 
-
-### Engaging with the public through Slack
-
-The SCM application supports Slack as a means of engaging the user the with the campaign. Once the Slack SCM app is integrated into the workspace of choice, the bot can be engaged in a channel by @mentioning the SCM bot user in a message. The user will respond with an introductory message and a link to where the application can be found in Slack.
-
-![Slack Channel mention](./media/slack-mention.png)
-
-The user can also visit the SCM chatbot Messages tab directly through the **Apps** section of their Slack application.
-
-![Apps location](./media/slack-apps-section.png)
-
-Once the user opens the app's Messages tab the bot will automatically reach out with an introduction message followed by a button to start the survey. The conversation can then be conducted by pressing buttons on multiple choice questions or simply typing the answer as with the Generic Chat Window and Twitter DMs below.
-
-![Chat window](./media/slack-window.png)
 
 
 ### Engaging with the public on Twitter
@@ -227,6 +211,16 @@ viewing analysis of answers to why questions](./media/image39.png)
 
 Figure 4.15 Social Campaign Manager dashboard
 viewing analysis of answers to why questions
+
+Figure 4.16 shows a word cloud of all free form responses including open
+questions from above and all free form text that was not recognised as a
+predefined answer to a question from the form above.
+
+![Figure 4.16 Viewing the word cloud of all free
+form answers including answers not fitting the question](./media/image40.png)
+
+Figure 4.16 Viewing the word cloud of all free
+form answers including answers not fitting the question
 
 Finally, the dashboard can extract responses from the public that the
 bot has been unable to answer or understand. Figure 4.16 shows a
