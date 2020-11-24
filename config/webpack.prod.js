@@ -1,10 +1,8 @@
 /**
  * @author: @AngularClass
  */
-require('dotenv').config();
 
 const helpers = require('./helpers');
-const buildUtils = require('./build-utils');
 
 /**
  * Used to merge webpack configs
@@ -20,10 +18,11 @@ const commonConfig = require('./webpack.common.js');
  * Webpack Plugins
  */
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const HashedModuleIdsPlugin = require('webpack/lib/HashedModuleIdsPlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+const ModuleConcatenationPlugin = require('webpack/lib/optimize/ModuleConcatenationPlugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeJsPlugin = require('optimize-js-plugin');
 
@@ -41,42 +40,10 @@ const METADATA = {
     HMR: false,
     AOT: AOT
 };
-const sourceMapEnabled = process.env.SOURCE_MAP === '1';
-const supportES2015 = buildUtils.supportES2015(buildUtils.DEFAULT_METADATA.tsConfigPath);
 
+const MAPBOX_API_TOKEN = process.env.MAPBOX_API_TOKEN;
 const CAMPAIGN_FORM_ENABLED = process.env.CAMPAIGN_FORM_ENABLED;
 
-/**
-   * Ref: https://github.com/mishoo/UglifyJS2/tree/harmony#minify-options
-   * @param supportES2015
-   * @param enableCompress disabling compress could improve the performance,
-   * see https://github.com/webpack/webpack/issues/4558#issuecomment-352255789
-   * @returns {{ecma: number, warnings: boolean, ie8: boolean, mangle: boolean,
-   * compress: {pure_getters: boolean, passes: number}, output: {ascii_only: boolean, comments: boolean}}}
- */
-function getUglifyOptions(supportES2015, enableCompress) {
-    const uglifyCompressOptions = {
-
-        /* buildOptimizer */
-        pure_getters: true,
-        // PURE comments work best with 3 passes.
-        // See https://github.com/webpack/webpack/issues/2899#issuecomment-317425926.
-        /* buildOptimizer */
-        passes: 2
-    };
-
-    return {
-        ecma: supportES2015 ? 6 : 5,
-        warnings: false,
-        ie8: false,
-        mangle: true,
-        compress: enableCompress ? uglifyCompressOptions : false,
-        output: {
-            ascii_only: true,
-            comments: false
-        }
-    };
-}
 
 // eslint-disable-next-line
 module.exports = function(env) {
@@ -85,7 +52,6 @@ module.exports = function(env) {
             env: ENV
         }),
         {
-            mode: 'production',
 
             /**
              * Developer tool to enhance debugging
@@ -134,31 +100,6 @@ module.exports = function(env) {
                 chunkFilename: '[name].[chunkhash].chunk.js'
             },
 
-            optimization: {
-                minimizer: [
-
-                    /**
-                     * Plugin: UglifyJsPlugin
-                     * Description: Minimize all JavaScript output of chunks.
-                     * Loaders are switched into minimizing mode.
-                     *
-                     * See: https://webpack.js.org/plugins/uglifyjs-webpack-plugin/
-                     *
-                     * NOTE: To debug prod builds uncomment //debug lines and comment //prod lines
-                     */
-                    new UglifyJsPlugin({
-                        sourceMap: sourceMapEnabled,
-                        parallel: true,
-                        cache: helpers.root('webpack-cache/uglify-cache'),
-                        uglifyOptions: getUglifyOptions(supportES2015, true)
-                    })
-                ],
-                splitChunks: {
-                    chunks: 'all'
-                }
-            },
-
-
             module: {
                 rules: [
 
@@ -167,7 +108,10 @@ module.exports = function(env) {
                      */
                     {
                         test: /\.css$/,
-                        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+                        loader: ExtractTextPlugin.extract({
+                            fallback: 'style-loader',
+                            use: 'css-loader'
+                        }),
                         include: [helpers.root('src', 'styles')]
                     },
 
@@ -176,7 +120,10 @@ module.exports = function(env) {
                      */
                     {
                         test: /\.scss$/,
-                        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+                        loader: ExtractTextPlugin.extract({
+                            fallback: 'style-loader',
+                            use: 'css-loader!sass-loader'
+                        }),
                         include: [helpers.root('src', 'styles')]
                     }
                 ]
@@ -188,6 +135,7 @@ module.exports = function(env) {
              * See: http://webpack.github.io/docs/configuration.html#plugins
              */
             plugins: [
+                new ModuleConcatenationPlugin(),
 
                 /**
                  * Webpack plugin to optimize a JavaScript file for faster initial load
@@ -199,7 +147,13 @@ module.exports = function(env) {
                     sourceMap: false
                 }),
 
-                new MiniCssExtractPlugin({ filename: '[name]-[hash].css', chunkFilename: '[name]-[chunkhash].css' }),
+                /**
+                 * Plugin: ExtractTextPlugin
+                 * Description: Extracts imported CSS files into external stylesheet
+                 *
+                 * See: https://github.com/webpack/extract-text-webpack-plugin
+                 */
+                new ExtractTextPlugin('[name].[contenthash].css'),
 
                 /**
                  * Plugin: DefinePlugin
@@ -219,6 +173,7 @@ module.exports = function(env) {
                         ENV: JSON.stringify(METADATA.ENV),
                         NODE_ENV: JSON.stringify(METADATA.ENV),
                         HMR: METADATA.HMR,
+                        MAPBOX_API_TOKEN: JSON.stringify(MAPBOX_API_TOKEN),
                         CAMPAIGN_FORM_ENABLED: JSON.stringify(CAMPAIGN_FORM_ENABLED),
                         MOCK: 'false',
                         MOCK_EXCEPTIONS: JSON.stringify([
@@ -235,6 +190,30 @@ module.exports = function(env) {
                             'auth/change-email'
                         ])
                     }
+                }),
+
+                /**
+                 * Plugin: UglifyJsPlugin
+                 * Description: Minimize all JavaScript output of chunks.
+                 * Loaders are switched into minimizing mode.
+                 *
+                 * See: https://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
+                 *
+                 * NOTE: To debug prod builds uncomment //debug lines and comment //prod lines
+                 */
+                new UglifyJsPlugin({
+                    parallel: true,
+                    uglifyOptions: {
+                        ie8: false,
+                        ecma: 6,
+                        warnings: true,
+                        mangle: true,
+                        output: {
+                            comments: false,
+                            beautify: false
+                        }
+                    },
+                    warnings: true
                 }),
 
                 /**

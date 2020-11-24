@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 import { Campaign } from '../../models/campaign';
 import { CampaignService } from '../../services/campaign.service';
 
-require('font-awesome-webpack-4');
+require('font-awesome-webpack');
 
 
 @Component({

@@ -19,4 +19,3 @@ test-campaignOut.json
 logs/*.log
 
 dev/redis-browser-config.yml
-webpack-cache/
