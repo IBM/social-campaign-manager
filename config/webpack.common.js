@@ -4,38 +4,29 @@
 
 const webpack = require('webpack');
 const helpers = require('./helpers');
+const buildUtils = require('./build-utils');
 
 /**
  * Webpack Plugins
  *
  * problem with copy-webpack-plugin
  */
-// const AssetsPlugin = require('assets-webpack-plugin');
-// const IgnorePlugin = require('webpack/lib/IgnorePlugin');
-// const NormalModuleReplacementPlugin = require('webpack/lib/NormalModuleReplacementPlugin');
+
+/* eslint-disable no-inline-comments */
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
-const CommonsChunkPlugin = require('webpack/lib/optimize/CommonsChunkPlugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const CheckerPlugin = require('awesome-typescript-loader').CheckerPlugin;
-const HtmlElementsPlugin = require('./html-elements-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin'); // Create a new index.html for you
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin'); // extend to load scripts async
+const HtmlElementsPlugin = require('./html-elements-plugin'); // Create head tags for favicons
 const InlineManifestWebpackPlugin = require('inline-manifest-webpack-plugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
+/* eslint-enable no-inline-comments */
 
 /**
  * Webpack Constants
  */
-const HMR = helpers.hasProcessFlag('hot');
 const AOT = process.env.BUILD_AOT || helpers.hasNpmFlag('aot');
-const METADATA = {
-    title: 'IBM Social Campaign Manager',
-    baseUrl: '/',
-    isDevServer: helpers.isWebpackDevServer(),
-    HMR: HMR,
-    AOT: AOT
-};
 
 /**
  * Webpack configuration
@@ -44,6 +35,21 @@ const METADATA = {
  */
 module.exports = function(options) {
     var isProd = options.env === 'production';
+    const METADATA = Object.assign({}, buildUtils.DEFAULT_METADATA, options.metadata || {});
+    const ngcWebpackConfig = buildUtils.ngcWebpackSetup(isProd, METADATA);
+    const supportES2015 = buildUtils.supportES2015(METADATA.tsConfigPath);
+
+    const entry = {
+        polyfills: './src/polyfills.browser.ts',
+        twbs: 'bootstrap-loader',
+        main: AOT ? './src/main.browser.aot.ts' : './src/main.browser.ts'
+    };
+
+    Object.assign(ngcWebpackConfig.plugin, {
+        tsConfigPath: METADATA.tsConfigPath,
+        mainPath: entry.main
+    });
+
     return {
 
         /**
@@ -60,11 +66,7 @@ module.exports = function(options) {
          *
          * See: http://webpack.github.io/docs/configuration.html#entry
          */
-        entry: {
-            polyfills: './src/polyfills.browser.ts',
-            twbs: 'bootstrap-loader',
-            main: AOT ? './src/main.browser.aot.ts' : './src/main.browser.ts'
-        },
+        entry: entry,
 
         /**
          * Options affecting the resolving of modules.
@@ -72,6 +74,7 @@ module.exports = function(options) {
          * See: http://webpack.github.io/docs/configuration.html#resolve
          */
         resolve: {
+            mainFields: [...(supportES2015 ? ['es2015'] : []), 'browser', 'module', 'main'],
 
             /**
              * An array of extensions that should be used to resolve modules.
@@ -232,19 +235,6 @@ module.exports = function(options) {
             new CheckerPlugin(),
 
             /**
-             * Plugin: CommonsChunkPlugin
-             * Description: Shares common code between the pages.
-             * It identifies common modules and put them into a commons chunk.
-             *
-             * See: https://webpack.github.io/docs/list-of-plugins.html#commonschunkplugin
-             * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
-             */
-            new CommonsChunkPlugin({
-                name: 'polyfills',
-                chunks: ['polyfills']
-            }),
-
-            /**
              * Plugin: ContextReplacementPlugin
              * Description: Provides context to Angular's use of System.import
              *
@@ -335,6 +325,7 @@ module.exports = function(options) {
              * Plugin: ScriptExtHtmlWebpackPlugin
              * Description: Enhances html-webpack-plugin functionality
              * with different deployment options for your scripts including:
+             * 'async', 'preload', 'prefetch', 'defer', 'module', custom attributes, and inlining.
              *
              * See: https://github.com/numical/script-ext-html-webpack-plugin
              */
@@ -371,13 +362,6 @@ module.exports = function(options) {
             new HtmlElementsPlugin({
                 headTags: require('./head-config.common')
             }),
-
-            /**
-             * Plugin LoaderOptionsPlugin (experimental)
-             *
-             * See: https://gist.github.com/sokra/27b24881210b56bbaff7
-             */
-            new LoaderOptionsPlugin({}),
 
             new ngcWebpack.NgcWebpackPlugin({
 

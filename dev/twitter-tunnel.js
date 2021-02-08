@@ -15,8 +15,8 @@ const request = require('request-promise');
 * - CLOUD_BASE_URL: The url to which Twitter will send it's webhook requests
 * - TWITTER_APP_ENVIRONMENT: Your Twitter app environment from https://developer.twitter.com/apps
 */
-const CLOUD_BASE_URL = 'http://YOUR-APPLICATION-NAME.eu-gb.mybluemix.net/';
-const TWITTER_APP_ENVIRONMENT = 'your-twitter-app-environment';
+const CLOUD_BASE_URL = process.env.CLOUD_BASE_URL;
+const TWITTER_APP_ENVIRONMENT = process.env.TWITTER_APP_ENVIRONMENT;
 const twitterApiUrl = 'https://api.twitter.com/1.1/account_activity/all/' + TWITTER_APP_ENVIRONMENT;
 
 let options = {

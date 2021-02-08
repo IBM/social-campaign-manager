@@ -7,8 +7,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
+export const ROOT_SELECTOR = 'app';
+
 @Component({
-    selector: 'app',
+    selector: ROOT_SELECTOR,
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css']
 })

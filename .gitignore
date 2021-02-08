@@ -17,5 +17,7 @@ src/**/*.js.map
 test-campaignOut.json
 
 logs/*.log
+*.log
 
 dev/redis-browser-config.yml
+webpack-cache/

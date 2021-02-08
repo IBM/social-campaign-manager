@@ -43,8 +43,11 @@ module.exports = function(config) {
                 included: false,
                 served: true,
                 nocache: false
-            },
-            { pattern: './spec/**/*.spec.ts', watched: false }
+            }, {
+                pattern: './spec/**/*.spec.ts',
+                type: 'js',
+                watched: false
+            }
         ],
 
         /**
