@@ -121,7 +121,7 @@
         "@types/uglify-js": "3.0.4",
         "@types/webpack": "2.2.16",
         "add-asset-html-webpack-plugin": "2.1.3",
-        "ajv": "6.1.1",
+        "ajv": "6.12.3",
         "assets-webpack-plugin": "3.9.10",
         "chai": "4.2.0",
         "codelyzer": "4.3.0",
